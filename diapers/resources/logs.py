@@ -9,7 +9,6 @@ api = Api(api_bp)
 
 class Log(Resource): # /api/logs/<string:log_id>
     decorators = [jwt_required]
-    # id, cnt, date, inner_opened, inner_new, outer_opened, outer_new, comment, created_by, modified_by, hidden
     def get(self, log_id):
         logs_model = Logs('logs', id=log_id)
         return logs_model.readOne()
@@ -19,7 +18,7 @@ class Log(Resource): # /api/logs/<string:log_id>
 
         parser = reqparse.RequestParser()
         parser.add_argument('cnt', type=str, required=True, location='json')
-        parser.add_argument('date', type=str, required=True, location='json')
+        parser.add_argument('time', type=str, required=True, location='json')
         parser.add_argument('inner_opened', type=int, required=True, location='json')
         parser.add_argument('inner_new', type=int, required=True, location='json')
         parser.add_argument('outer_opened', type=int, required=True, location='json')
@@ -27,9 +26,9 @@ class Log(Resource): # /api/logs/<string:log_id>
         parser.add_argument('comment', type=str, required=True, location='json')
 
         args = parser.parse_args()
-        cnt, date, inner_opened, inner_new, outer_opened, outer_new, comment = args.values()
+        cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment = args.values()
 
-        logs_model = Logs('logs', cnt=cnt, date=date, inner_opened=inner_opened, inner_new=inner_new,
+        logs_model = Logs('logs', cnt=cnt, time=time, inner_opened=inner_opened, inner_new=inner_new,
             outer_opened=outer_opened, outer_new=outer_new, comment=comment, created_by=current_user, modified_by='', hidden=False)
         return logs_model.create()
 
@@ -38,7 +37,7 @@ class Log(Resource): # /api/logs/<string:log_id>
 
         parser = reqparse.RequestParser()
         parser.add_argument('cnt', type=str, location='json')
-        parser.add_argument('date', type=str, location='json')
+        parser.add_argument('time', type=str, location='json')
         parser.add_argument('inner_opened', type=int, location='json')
         parser.add_argument('inner_new', type=int, location='json')
         parser.add_argument('outer_opened', type=int, location='json')
@@ -47,9 +46,9 @@ class Log(Resource): # /api/logs/<string:log_id>
         parser.add_argument('hidden', type=bool, location='json')
 
         args = parser.parse_args()
-        cnt, date, inner_opened, inner_new, outer_opened, outer_new, comment, hidden = args.values()
+        cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment, hidden = args.values()
 
-        logs_model = Logs('logs', id=log_id, cnt=cnt, date=date, inner_opened=inner_opened, inner_new=inner_new,
+        logs_model = Logs('logs', id=log_id, cnt=cnt, time=time, inner_opened=inner_opened, inner_new=inner_new,
             outer_opened=outer_opened, outer_new=outer_new, comment=comment, modified_by=current_user, hidden=hidden)
         return logs_model.update()
 
