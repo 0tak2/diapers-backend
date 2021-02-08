@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restful import Api, Resource, url_for, reqparse
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 
 from diapers.models.cnts_model import Cnts
 
@@ -12,7 +12,7 @@ class Client(Resource): # /api/cnts/<string:cnt_id>
 
     def get(self, cnt_id):
         cnts_model = Cnts('cnts', id=cnt_id)
-        return cnts_model.readOne()
+        return cnts_model.read_one()
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -44,6 +44,10 @@ class Client(Resource): # /api/cnts/<string:cnt_id>
         return cnts_model.update()
 
     def delete(self, cnt_id):
+        level = get_jwt_claims()['level']
+        if level < 1:
+            return {'success': False, 'msg': 'Unavailable request to level 0 user.'}, 403
+
         cnts_model = Cnts('cnts', id=cnt_id)
         return cnts_model.delete()
 
@@ -63,11 +67,11 @@ class ClientsList(Resource): # /api/cnts
             size = 10
         elif page is None and size is None:
             # 페이지네이션 없이 전체 결과 반환
-            return cnts_model.readAll()
+            return cnts_model.read_all()
         elif page is None or size is None:
             return {'msg': 'Check your query string. Something wrong.'}, 400
 
-        return cnts_model.readPage(page * size, size)
+        return cnts_model.read_page(page * size, size)
 
 api.add_resource(ClientsList, '')
 api.add_resource(Client, '/<string:cnt_id>', '')

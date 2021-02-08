@@ -26,7 +26,7 @@
 
 * id: 도큐먼트의 ID ([예시])7hCPzfVkP0vz903T8vf4)
 * cnt [string]: 대상 이용자. cnts 컬렉션의 해당 이용자 도큐먼트의 id를 지정. ([예시])humcF1RDivV1pI71Dz24)
-* date [timestamp]: 기록 현재 시간 ([예시])2021년 2월 7일 오전 9시 0분 0초 UTC+9)
+* time [timestamp]: 기록 현재 시간 ([예시])2021년 2월 7일 오전 9시 0분 0초 UTC+9)
 * inner_opened [number]: 개봉된 속기저귀 팩 수 ([예시])1)
 * inner_new [number]: 미개봉 속기저귀 팩 수 ([예시])10)
 * outer_opened [number]: 개봉된 겉기저귀 팩 수 ([예시])1)

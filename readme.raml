@@ -1,0 +1,239 @@
+#%RAML 1.0
+---
+title: Hanbeot Dungji Diapers Management System Api
+baseUri: http://domain/api
+version: v1
+
+/auth:
+    /login:
+        description: 엑세스 토큰을 응답한다.
+        post:
+            queryParameters:
+                username:
+                    displayName: Username
+                    type: string
+                    description: 유저 아이디
+                    example: admin
+                    required: true
+                password:
+                    displayName: Password
+                    type: string
+                    description: 비밀번호
+                    example: 12345ab!
+                    required: true
+    /register:
+        description: 새로운 계정을 만든다.
+        post:
+            queryParameters:
+                username:
+                    displayName: Username
+                    type: string
+                    description: 유저 아이디
+                    example: admin
+                    required: true
+                password:
+                    displayName: Password
+                    type: string
+                    description: 비밀번호
+                    example: 12345ab!
+                    required: true
+                realname:
+                    displayName: Real Name
+                    type: string
+                    description: 해당 계정을 사용하는 사람의 본명
+                    example: 홍길동
+                    required: true
+                description:
+                    displayName: Description
+                    type: string
+                    description: 해당 계정에 대한 설명
+                    example: '사회복무요원 계정'
+                    required: true
+    /exist/{username}:
+        description: 이름이 중복되는지 검사한다.
+        get:
+    /loginc:
+        description: 엑세스 토큰을 http-only 쿠키에 저장한다.
+        post:
+            queryParameters:
+                username:
+                    displayName: Username
+                    type: string
+                    description: 유저 아이디
+                    example: admin
+                    required: true
+                password:
+                    displayName: Password
+                    type: string
+                    description: 비밀번호
+                    example: 12345ab!
+                    required: true
+    /logoutc:
+        description: http-only 쿠키를 제거한다.
+        post:
+    /refreshc:
+        description: http-only 쿠키의 토큰을 리프레시한다.
+        post:
+
+/cnts:
+    get:
+        description: 이용자 정보 리스트를 얻는다.
+        queryParameters:
+            page:
+                displayName: Page Count
+                type: number
+                description: 페이지 번호
+                example: 1
+            size:
+                displayName: Page Size
+                type: number
+                description: 한 페이지에 표시할 항목 수
+                example: 10
+    post:
+        description: 새로운 이용자를 추가한다.
+        queryParameters:
+            name:
+                displayName: Name
+                type: string
+                description: 이용자 이름
+                example: 홍길동
+                required: true
+            birth:
+                displayName: Birthday
+                type: string
+                description: 이용자 생년월일. 동명이인 존재시 구분을 위해 필요.
+                example: 1998-04-08
+                required: true
+            description:
+                displayName: Description
+                type: string
+                description: 해당 이용자에 대한 설명
+                example: '2층 A실'
+                required: true
+            inner_product:
+                displayName: Using diaper inner product's name
+                type: string
+                description: 기본 이용 속기저귀 제품명
+                example: '굿나이트 속기저귀'
+                required: true
+            outer_product:
+                displayName: Using diaper outer product's name
+                type: string
+                description: 기본 이용 겉기저귀 제품명
+                example: '봄날 테이프형'
+                required: true
+    /{cnt_id}:
+        description: 해당하는 이용자 정보를 얻는다 / 업데이트 한다 / 삭제한다
+        get:
+        patch:
+        delete:
+
+/users:
+    get:
+        description: 유저 정보 리스트를 얻는다.
+    post:
+        description: 새로운 계정을 추가한다. (level 1 이상)
+        queryParameters:
+            username:
+                displayName: Username
+                type: string
+                description: 유저 아이디
+                example: admin
+                required: true
+            password:
+                displayName: Password
+                type: string
+                description: 비밀번호
+                example: 12345ab!
+                required: true
+            realname:
+                displayName: Real Name
+                type: string
+                description: 해당 계정을 사용하는 사람의 본명
+                example: 홍길동
+                required: true
+            description:
+                displayName: Description
+                type: string
+                description: 해당 계정에 대한 설명
+                example: '사회복무요원 계정'
+                required: true
+            level:
+                displayName: Level
+                type: number
+                description: 계정의 권한. (2=시스템 관리자, 1=매니저, 0=일반)
+                example: 2
+                required: true
+            deactivated:
+                displayName: Deactivated?
+                type: bool
+                description: 계정 비활성화 여부
+                example: false
+                required: true
+    /{user_id}:
+        description: 해당하는 유저의 정보를 얻는다 / 업데이트 한다 (level 1 이상)/ 삭제한다 (level 1 이상)
+        get:
+        patch:
+        delete:
+
+/logs:
+    post:
+        description: 새로운 로그를 추가한다.
+        queryParameters:
+            cnt:
+                displayName: Client document's id
+                type: string
+                description: 대상 이용자의 문서 아이디
+                example: humcF1RDivV1pI71Dz24
+                required: true
+            time:
+                displayName: created at
+                type: string
+                description: 기록 시간
+                example: 2021-02-08 09:00
+                required: true
+            inner_opened:
+                displayName: The number of opened diaper inner packs
+                type: number
+                description: 개봉된 속 기저귀 팩 수
+                example: 1
+                required: true
+            inner_new:
+                displayName: The number of new diaper inner packs
+                type: number
+                description: 미개봉 속 기저귀 팩 수
+                example: 1
+                required: true
+            outer_opened:
+                displayName: The number of opened diaper outer packs
+                type: number
+                description: 개봉된 겉 기저귀 팩 수
+                example: 1
+                required: true
+            outer_new:
+                displayName: The number of new diaper outer packs
+                type: number
+                description: 미개봉 겉 기저귀 팩 수
+                example: 1
+                required: true
+            comment:
+    /{log_id}:
+        description: 새로운 로그를 얻는다 / 업데이트 한다 / 삭제한다
+        get:
+        patch:
+        delete:
+    /cnt/{cnt_id}:
+        description: 해당하는 이용자에 대한 로그 리스트를 얻는다.
+        get:
+            queryParameters:
+                page:
+                    displayName: Page Count
+                    type: number
+                    description: 페이지 번호
+                    example: 1
+                size:
+                    displayName: Page Size
+                    type: number
+                    description: 한 페이지에 표시할 항목 수
+                    example: 10
+

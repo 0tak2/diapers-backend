@@ -13,11 +13,6 @@ from diapers.models.users_model import Users
 api_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 api = Api(api_bp)
 
-# for test
-admin_id = 'limorbear'
-admin_pass = generate_password_hash('980408')
-#
-
 class Login(Resource): # /api/auth/login
     def post(self):
         parser = reqparse.RequestParser()
@@ -32,7 +27,7 @@ class Login(Resource): # /api/auth/login
             user_data = result[0]
             print(user_data['password'])
             if check_password_hash(user_data['password'], password):
-                access_token = create_access_token(identity=username)
+                access_token = create_access_token(identity=user_data)
                 return {
                     'success': True, 
                     'username': username,
@@ -61,7 +56,7 @@ class Register(Resource): # /api/auth/register
         # 중복 체크
         result = users_model.getUser()
         if result:
-            return {'success': True, 'msg': 'The username already exists'}, 400
+            return {'success': False, 'msg': 'The username already exists'}, 400
 
         return users_model.create()
 
@@ -89,8 +84,8 @@ class LoginCookie(Resource): # /api/auth/loginc
             user_data = result[0]
             print(user_data['password'])
             if check_password_hash(user_data['password'], password):
-                access_token = create_access_token(identity=username)
-                refresh_token = create_refresh_token(identity=username)
+                access_token = create_access_token(identity=user_data)
+                refresh_token = create_refresh_token(identity=user_data)
 
                 resp = jsonify({'msg': 'You loged in.'})
                 set_access_cookies(resp, access_token)
@@ -107,7 +102,7 @@ class LogoutCookie(Resource): # /api/auth/logoutc
         unset_jwt_cookies(resp)
         return resp
 
-class RefreshCookie(Resource):
+class RefreshCookie(Resource): # /api/auth/refreshc
     def post(self):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity=current_user)

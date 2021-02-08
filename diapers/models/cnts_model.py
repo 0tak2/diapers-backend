@@ -11,5 +11,3 @@ class Cnts(Model):
             'outer_product': 'str',
             'deactivated': 'bool'
         }
-
-    # cnt-id 받아와 쿼리하는 부분 만들어야함

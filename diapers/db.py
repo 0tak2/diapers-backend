@@ -49,14 +49,14 @@ class Model():
         except Exception as e:
             return {'success': False, 'msg': e}, 400
 
-    def readOne(self):
+    def read_one(self):
         try:
             result = str(self.ref.document(self.data['id']).get().to_dict())
             return {'success': True, 'result': result}
         except Exception as e:
             return {'success': False, 'msg': e}
     
-    def readPage(self, offset, limit):
+    def read_page(self, offset, limit):
         try:
             docs = self.ref.offset(offset).limit(limit).stream()
             result = []
@@ -68,7 +68,7 @@ class Model():
         except Exception as e:
             return {'success': False, 'msg': e}, 400
 
-    def readAll(self):
+    def read_all(self):
         try:
             docs = self.ref.stream()
             result = []
