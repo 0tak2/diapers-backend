@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, url_for, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 
 from diapers.models.cnts_model import Cnts
+from diapers.utils.timestamp import str_to_date, date_to_datetime
 
 api_bp = Blueprint('cnts', __name__, url_prefix='/api/cnts')
 api = Api(api_bp)
@@ -24,7 +25,10 @@ class Client(Resource): # /api/cnts/<string:cnt_id>
         args = parser.parse_args()
         name, birth, description, inner_product, outer_product = args.values()
 
-        cnts_model = Cnts('cnts', name=name, birth=birth, description=description,
+        birth_parsed = str_to_date(birth)
+        birth_dt = date_to_datetime(birth_parsed)
+
+        cnts_model = Cnts('cnts', name=name, birth=birth_dt, description=description,
             inner_product=inner_product, outer_product=outer_product, deactivated=False)
         return cnts_model.create()
 
@@ -39,7 +43,10 @@ class Client(Resource): # /api/cnts/<string:cnt_id>
         args = parser.parse_args()
         name, birth, description, inner_product, outer_product, deactivated = args.values()
 
-        cnts_model = Cnts('cnts', id=cnt_id, name=name, birth=birth, description=description,
+        birth_parsed_list = birth.split('-', 3) # YYYY-MM-DD
+        birth_parsed = date(birth_parsed_list[0], birth_parsed_list[1], birth_parsed_list[2])
+
+        cnts_model = Cnts('cnts', id=cnt_id, name=name, birth=birth_parsed, description=description,
             inner_product=inner_product, outer_product=outer_product, deactivated=deactivated)
         return cnts_model.update()
 

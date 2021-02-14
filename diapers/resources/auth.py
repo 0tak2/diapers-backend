@@ -25,7 +25,6 @@ class Login(Resource): # /api/auth/login
         result = auth_model.getUser()
         if result:
             user_data = result[0]
-            print(user_data['password'])
             if check_password_hash(user_data['password'], password):
                 access_token = create_access_token(identity=user_data)
                 return {
@@ -87,18 +86,18 @@ class LoginCookie(Resource): # /api/auth/loginc
                 access_token = create_access_token(identity=user_data)
                 refresh_token = create_refresh_token(identity=user_data)
 
-                resp = jsonify({'msg': 'You loged in.'})
+                resp = jsonify({'success': True, 'msg': 'You loged in.'})
                 set_access_cookies(resp, access_token)
                 set_refresh_cookies(resp, refresh_token)
                 return resp
             else:
-                return {'success': True, 'msg': 'Wrong username or password.'}, 400
+                return {'success': False, 'msg': 'Wrong username or password.'}, 400
         else:
             return {'success': False, 'msg': 'Wrong username or password.'}, 400
 
 class LogoutCookie(Resource): # /api/auth/logoutc
     def post(self): # 토큰 정보를 담은 HttpOnly 쿠키를 제거
-        resp = jsonify({'msg': 'You loged out.'})
+        resp = jsonify({'success': True, 'msg': 'You loged out.'})
         unset_jwt_cookies(resp)
         return resp
 
@@ -107,7 +106,7 @@ class RefreshCookie(Resource): # /api/auth/refreshc
         current_user = get_jwt_identity()
         access_token = create_access_token(identity=current_user)
 
-        resp = jsonify({'msg': 'refreshed cookie'})
+        resp = jsonify({'success': True, 'msg': 'refreshed cookie'})
         set_access_cookies(resp, access_token)
         return resp
 

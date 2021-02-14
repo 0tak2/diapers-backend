@@ -1,3 +1,5 @@
+from datetime import date
+
 from flask import Blueprint
 from flask_restful import Api, Resource, url_for, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -29,7 +31,10 @@ class Log(Resource): # /api/logs/<string:log_id>
         args = parser.parse_args()
         cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment = args.values()
 
-        logs_model = Logs('logs', cnt=cnt, time=time, inner_opened=inner_opened, inner_new=inner_new,
+        time_parsed_list = time.split('-', 3) # YYYY-MM-DD
+        time_parsed = date(int(time_parsed_list[0]), int(time_parsed_list[1]), int(time_parsed_list[2]))
+
+        logs_model = Logs('logs', cnt=cnt, time=time_parsed, inner_opened=inner_opened, inner_new=inner_new,
             outer_opened=outer_opened, outer_new=outer_new, comment=comment, created_by=current_user, modified_by='', hidden=False)
         return logs_model.create()
 

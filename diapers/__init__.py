@@ -28,11 +28,11 @@ def create_app(test_config=None):
     jwt = JWTManager(app)
     @jwt.user_claims_loader
     def add_claims_to_access_token(user):
-        return {'level': user.level}
+        return {'level': user['level']}
 
     @jwt.user_identity_loader
     def user_identity_lookup(user):
-        return user.username
+        return user['username']
 
     from diapers.resources import auth
     app.register_blueprint(auth.api_bp)

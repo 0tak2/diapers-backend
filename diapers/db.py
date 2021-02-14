@@ -47,11 +47,18 @@ class Model():
             self.ref.add(self.data_id_safe)
             return {'success': True}
         except Exception as e:
-            return {'success': False, 'msg': e}, 400
+            return {'success': False, 'msg': str(e)}, 400
 
     def read_one(self):
         try:
-            result = str(self.ref.document(self.data['id']).get().to_dict())
+            result = self.ref.document(self.data['id']).get().to_dict()
+
+            # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
+            for key in result.keys():
+                if str(type(result[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
+                    result[key] = result[key].isoformat()
+
+            result = str(result)
             return {'success': True, 'result': result}
         except Exception as e:
             return {'success': False, 'msg': e}
@@ -62,9 +69,23 @@ class Model():
             result = []
             for doc in docs:
                 dic = doc.to_dict()
+                # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
+                for key in dic.keys():
+                    if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
+                        dic[key] = dic[key].isoformat()
+
                 dic['id'] = doc.id
                 result.append(str(dic))
-            return {'success': True, 'result': result}
+
+            next_docs = self.ref.offset(offset + limit).limit(limit).stream()
+            next_result = []
+            for doc in next_docs:
+                dic = doc.to_dict()
+                dic['id'] = doc.id
+                next_result.append(str(dic))
+            last = True if next_result == [] else False
+
+            return {'success': True, 'result': result, 'last': last}
         except Exception as e:
             return {'success': False, 'msg': e}, 400
 
@@ -74,9 +95,13 @@ class Model():
             result = []
             for doc in docs:
                 dic = doc.to_dict()
+                # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
+                for key in dic.keys():
+                    if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
+                        dic[key] = dic[key].isoformat()
+                        
                 dic['id'] = doc.id
                 result.append(str(dic))
-                print(dir(doc.id))
             return {'success': True, 'result': result}
         except Exception as e:
             return {'success': False, 'msg': e}, 400

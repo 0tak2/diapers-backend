@@ -5,7 +5,7 @@ class Cnts(Model):
         self.model = {
             'id': 'str',
             'name': 'str',
-            'birth': 'str',
+            'birth': 'datetime.datetime',
             'description': 'str',
             'inner_product': 'str',
             'outer_product': 'str',
