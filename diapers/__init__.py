@@ -1,3 +1,9 @@
+'''
+Hanbeot Dungji Diapers Management System
+Backend Server
+v 0.0.1 (2021-02-15)
+'''
+
 import os
 
 from flask import Flask

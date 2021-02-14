@@ -5,6 +5,7 @@ from flask_restful import Api, Resource, url_for, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from diapers.models.logs_model import Logs
+from diapers.utils.timestamp import str_to_date, date_to_datetime
 
 api_bp = Blueprint('logs', __name__, url_prefix='/api/logs')
 api = Api(api_bp)
@@ -31,10 +32,13 @@ class Log(Resource): # /api/logs/<string:log_id>
         args = parser.parse_args()
         cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment = args.values()
 
-        time_parsed_list = time.split('-', 3) # YYYY-MM-DD
-        time_parsed = date(int(time_parsed_list[0]), int(time_parsed_list[1]), int(time_parsed_list[2]))
+        time_parsed = None
+        time_dt = None
+        if time is not None:
+            time_parsed = str_to_date(time)
+            time_dt = date_to_datetime(time_parsed)
 
-        logs_model = Logs('logs', cnt=cnt, time=time_parsed, inner_opened=inner_opened, inner_new=inner_new,
+        logs_model = Logs('logs', cnt=cnt, time=time_dt, inner_opened=inner_opened, inner_new=inner_new,
             outer_opened=outer_opened, outer_new=outer_new, comment=comment, created_by=current_user, modified_by='', hidden=False)
         return logs_model.create()
 
@@ -54,7 +58,13 @@ class Log(Resource): # /api/logs/<string:log_id>
         args = parser.parse_args()
         cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment, hidden = args.values()
 
-        logs_model = Logs('logs', id=log_id, cnt=cnt, time=time, inner_opened=inner_opened, inner_new=inner_new,
+        time_parsed = None
+        time_dt = None
+        if time is not None:
+            time_parsed = str_to_date(time)
+            time_dt = date_to_datetime(time_parsed)
+
+        logs_model = Logs('logs', id=log_id, cnt=cnt, time=time_dt, inner_opened=inner_opened, inner_new=inner_new,
             outer_opened=outer_opened, outer_new=outer_new, comment=comment, modified_by=current_user, hidden=hidden)
         return logs_model.update()
 

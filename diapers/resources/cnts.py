@@ -25,8 +25,11 @@ class Client(Resource): # /api/cnts/<string:cnt_id>
         args = parser.parse_args()
         name, birth, description, inner_product, outer_product = args.values()
 
-        birth_parsed = str_to_date(birth)
-        birth_dt = date_to_datetime(birth_parsed)
+        birth_parsed = None
+        birth_dt = None
+        if birth is not None:
+            birth_parsed = str_to_date(birth)
+            birth_dt = date_to_datetime(birth_parsed)
 
         cnts_model = Cnts('cnts', name=name, birth=birth_dt, description=description,
             inner_product=inner_product, outer_product=outer_product, deactivated=False)
@@ -43,10 +46,13 @@ class Client(Resource): # /api/cnts/<string:cnt_id>
         args = parser.parse_args()
         name, birth, description, inner_product, outer_product, deactivated = args.values()
 
-        birth_parsed_list = birth.split('-', 3) # YYYY-MM-DD
-        birth_parsed = date(birth_parsed_list[0], birth_parsed_list[1], birth_parsed_list[2])
+        birth_parsed = None
+        birth_dt = None
+        if birth is not None:
+            birth_parsed = str_to_date(birth)
+            birth_dt = date_to_datetime(birth_parsed)
 
-        cnts_model = Cnts('cnts', id=cnt_id, name=name, birth=birth_parsed, description=description,
+        cnts_model = Cnts('cnts', id=cnt_id, name=name, birth=birth_dt, description=description,
             inner_product=inner_product, outer_product=outer_product, deactivated=deactivated)
         return cnts_model.update()
 
