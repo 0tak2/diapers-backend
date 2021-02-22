@@ -5,7 +5,7 @@ class Logs(Model):
         self.model = {
             'id': 'str',
             'cnt': 'str',
-            'date': 'str',
+            'time': 'str',
             'inner_opened': 'int',
             'inner_new': 'int',
             'outer_opened': 'int',
