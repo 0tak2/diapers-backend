@@ -912,8 +912,8 @@
     "url": "",
     "version": "0.0.0",
     "filename": "./doc/main.js",
-    "group": "E:\\Projects\\2021\\diapers-backend\\apidoc\\doc\\main.js",
-    "groupTitle": "E:\\Projects\\2021\\diapers-backend\\apidoc\\doc\\main.js",
+    "group": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\main.js",
+    "groupTitle": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\main.js",
     "name": ""
   },
   {
@@ -1084,7 +1084,7 @@
             "type": "String",
             "optional": false,
             "field": "time",
-            "description": "<p>기록 시간 (YYYY-MM-DD)</p>"
+            "description": "<p>기록 시간 (YYYY-MM-DD HH:MM)</p>"
           },
           {
             "group": "Success 200",
@@ -1254,7 +1254,7 @@
             "type": "String",
             "optional": true,
             "field": "time",
-            "description": "<p>기록 시간 (YYYY-MM-DD)</p>"
+            "description": "<p>기록 시간 (YYYY-MM-DD HH:MM)</p>"
           },
           {
             "group": "Request Body",
@@ -1358,7 +1358,7 @@
             "type": "String",
             "optional": false,
             "field": "time",
-            "description": "<p>기록 시간 (YYYY-MM-DD)</p>"
+            "description": "<p>기록 시간 (YYYY-MM-DD HH:MM)</p>"
           },
           {
             "group": "Request Body",

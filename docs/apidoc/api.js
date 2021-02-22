@@ -297,7 +297,7 @@
  * @apiHeader Authorization Bearer <JWT_TOKEN>
  *
  * @apiParam (Request Body) {String} cnt          이용자 도큐먼트 id
- * @apiParam (Request Body) {String} time         기록 시간 (YYYY-MM-DD)
+ * @apiParam (Request Body) {String} time         기록 시간 (YYYY-MM-DD HH:MM)
  * @apiParam (Request Body) {Number} inner_opened 개봉 속기저귀 재고량
  * @apiParam (Request Body) {Number} inner_new    미개봉 속기저귀 재고량
  * @apiParam (Request Body) {Number} outer_opened 개봉 겉기저귀 재고량
@@ -327,7 +327,7 @@
  * 
  * @apiSuccess {Boolean} success      요청 성공 여부
  * @apiSuccess {String} cnt          이용자 도큐먼트 id
- * @apiSuccess {String} time         기록 시간 (YYYY-MM-DD)
+ * @apiSuccess {String} time         기록 시간 (YYYY-MM-DD HH:MM)
  * @apiSuccess {Number} inner_opened 개봉 속기저귀 재고량
  * @apiSuccess {Number} inner_new    미개봉 속기저귀 재고량
  * @apiSuccess {Number} outer_opened 개봉 겉기저귀 재고량
@@ -350,7 +350,7 @@
  *
  * @apiParam {String} log_id 로그 도큐먼트 id
  * @apiParam (Request Body) {String} [cnt]          이용자 도큐먼트 id
- * @apiParam (Request Body) {String} [time]         기록 시간 (YYYY-MM-DD)
+ * @apiParam (Request Body) {String} [time]         기록 시간 (YYYY-MM-DD HH:MM)
  * @apiParam (Request Body) {Number} [inner_opened] 개봉 속기저귀 재고량
  * @apiParam (Request Body) {Number} [inner_new]    미개봉 속기저귀 재고량
  * @apiParam (Request Body) {Number} [outer_opened] 개봉 겉기저귀 재고량
