@@ -4,6 +4,8 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+from datetime import datetime
+
 def get_db():
     if not firebase_admin._apps:
         cred = credentials.Certificate(current_app.config['DATABASE'])
@@ -56,7 +58,8 @@ class Model():
             # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
             for key in result.keys():
                 if str(type(result[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
-                    result[key] = result[key].isoformat()
+                    timestamp_kst = result[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+                    result[key] = timestamp_kst.isoformat()
 
             result = str(result)
             return {'success': True, 'result': result}
@@ -72,7 +75,8 @@ class Model():
                 # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
                 for key in dic.keys():
                     if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
-                        dic[key] = dic[key].isoformat()
+                        timestamp_kst = result[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+                        dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
                 result.append(str(dic))
@@ -98,7 +102,8 @@ class Model():
                 # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
                 for key in dic.keys():
                     if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
-                        dic[key] = dic[key].isoformat()
+                        timestamp_kst = result[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+                        dic[key] = timestamp_kst.isoformat()
                         
                 dic['id'] = doc.id
                 result.append(str(dic))
