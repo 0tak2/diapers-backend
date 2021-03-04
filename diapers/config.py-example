@@ -1,0 +1,6 @@
+import os
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+SECRET_KEY = os.getenv('SECRET_KEY', '기본값')
+JWT_SECRET_KEY= os.getenv('JWT_SECRET_KEY', '기본값')
+DEBUG = False
