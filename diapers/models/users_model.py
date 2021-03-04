@@ -23,4 +23,4 @@ class Users(Model):
                 result.append(dic)
             return result # 1개 이상일 경우 예외처리 필요
         except Exception as e:
-            return {'success': False, 'msg': e}, 400
+            return {'success': False, 'msg': str(e)}, 400

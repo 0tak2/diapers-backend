@@ -55,7 +55,10 @@ class Log(Resource): # /api/logs/<string:log_id>
         args = parser.parse_args()
         cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment, hidden = args.values()
 
-        time_parsed = datetime.strptime(time + " +0900", '%Y-%m-%d %H:%M %z')
+        if time is not None:
+            time_parsed = datetime.strptime(time + " +0900", '%Y-%m-%d %H:%M %z')
+        else:
+            time_parsed = None
 
         logs_model = Logs('logs', id=log_id, cnt=cnt, time=time_parsed, inner_opened=inner_opened, inner_new=inner_new,
             outer_opened=outer_opened, outer_new=outer_new, comment=comment, modified_by=current_user, hidden=hidden)
@@ -72,20 +75,37 @@ class LogsList(Resource): # /api/logs/cnt/<string:cnt_id>
         parser = reqparse.RequestParser()
         parser.add_argument('page', type=int, location='args')
         parser.add_argument('size', type=int, location='args')
+        parser.add_argument('start', type=str, location='args')
+        parser.add_argument('end', type=str, location='args')
         args = parser.parse_args()
-        page, size = args.values()
+        page, size, start, end = args.values()
+
+        if start is not None:
+            start_parsed = datetime.strptime(start + " +0900", '%Y-%m-%d %H:%M %z')
+        else:
+            start_parsed = None
+
+        if end is not None:
+            end_parsed = datetime.strptime(end + " +0900", '%Y-%m-%d %H:%M %z')
+        else:
+            end_parsed = None
 
         logs_model = Logs('logs')
 
-        if page is not None and size is None:
+        if page is not None and size is None: # size가 넘어오지 않았으면 10으로 지정함
             size = 10
-        elif page is None and size is None:
-            # 페이지네이션 없이 전체 결과 반환
-            return logs_model.read_all_where_cnt(cnt_id)
+        elif page is None and size is None: # 페이지네이션 없이 전체 결과 반환
+            if start_parsed is not None and end_parsed is not None: # 기간 조회
+                return logs_model.read_all_where_cnt_period(cnt_id, start_parsed, end_parsed)
+            else:
+                return logs_model.read_all_where_cnt(cnt_id)
         elif page is None or size is None:
             return {'msg': 'Check your query string. Something wrong.'}, 400
-
-        return logs_model.read_page_where_cnt(cnt_id, page * size, size)
+        else: #페이지네이션하여 반환
+            if start_parsed is not None and end_parsed is not None: # 기간 조회
+                return logs_model.read_page_where_cnt_period(cnt_id, page * size, size, start_parsed, end_parsed)
+            else:
+                return logs_model.read_page_where_cnt(cnt_id, page * size, size)
 
 api.add_resource(Log, '/<string:log_id>', '')
 api.add_resource(LogsList, '/cnt/<string:cnt_id>')

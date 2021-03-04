@@ -473,7 +473,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/cnts",
-    "title": "전체 이용자 조회",
+    "title": "이용자 리스트 조회 (전체)",
     "name": "Get-All-Cnt-List",
     "group": "Cnts",
     "header": {
@@ -584,7 +584,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/cnts?page=:page&size=:size",
-    "title": "이용자 조회",
+    "title": "이용자 리스트 조회 (페이지네이션)",
     "name": "Get-Cnt-List",
     "group": "Cnts",
     "header": {
@@ -911,6 +911,34 @@ define({ "api": [
     "type": "",
     "url": "",
     "version": "0.0.0",
+    "filename": "./doc/doc/main.js",
+    "group": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\doc\\main.js",
+    "groupTitle": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\doc\\main.js",
+    "name": ""
+  },
+  {
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "varname1",
+            "description": "<p>No type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "varname2",
+            "description": "<p>With type.</p>"
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
     "filename": "./doc/main.js",
     "group": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\main.js",
     "groupTitle": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\main.js",
@@ -978,8 +1006,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/logs/cnt/cnt_id",
-    "title": "이용자별 전체 로그 조회",
+    "url": "/api/logs/cnt/:cnt_id",
+    "title": "이용자별 로그 리스트 조회 (전체)",
     "name": "Get-All-Log-List",
     "group": "Logs",
     "header": {
@@ -1003,6 +1031,75 @@ define({ "api": [
             "optional": false,
             "field": "cnt_id",
             "description": "<p>이용자 도큐먼트 id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>요청 성공 여부</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "List",
+            "optional": false,
+            "field": "result",
+            "description": "<p>조회 결과</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Logs"
+  },
+  {
+    "type": "get",
+    "url": "/api/logs/cnt/:cnt_id?start=:start&end=:end",
+    "title": "특정 기간 이용자별 전체 로그 조회",
+    "name": "Get-All-Log-List-Period",
+    "group": "Logs",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;JWT_TOKEN&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "cnt_id",
+            "description": "<p>이용자 도큐먼트 id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "start",
+            "description": "<p>조회 시작 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "end",
+            "description": "<p>조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함</p>"
           }
         ]
       }
@@ -1137,8 +1234,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/logs/cnt/cnt_id?page=:page&size=:size",
-    "title": "이용자별 로그 리스트 조회",
+    "url": "/api/logs/cnt/:cnt_id?page=:page&size=:size",
+    "title": "이용자별 로그 리스트 조회 (페이지네이션)",
     "name": "Get-Log-List",
     "group": "Logs",
     "header": {
@@ -1176,6 +1273,82 @@ define({ "api": [
             "optional": false,
             "field": "size",
             "description": "<p>한 페이지 당 표시 개수</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>요청 성공 여부</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "List",
+            "optional": false,
+            "field": "result",
+            "description": "<p>조회 결과</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "last",
+            "description": "<p>마지막 페이지 여부</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Logs"
+  },
+  {
+    "type": "get",
+    "url": "/api/logs/cnt/:cnt_id?page=:page&size=:size&start=:start&end=:end",
+    "title": "특정 기간 이용자별 로그 리스트 조회",
+    "name": "Get-Log-List-Period",
+    "group": "Logs",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;JWT_TOKEN&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "cnt_id",
+            "description": "<p>이용자 도큐먼트 id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "start",
+            "description": "<p>조회 시작 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "end",
+            "description": "<p>조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함</p>"
           }
         ]
       }
@@ -1400,7 +1573,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n}",
+          "content": "{\n     \"cnt\": \"PlS84N66VyNDZSp2X2Yy\",\n     \"time\": \"2021-02-13 09:00\",\n     \"inner_opened\": 1,\n     \"inner_new\": 10,\n     \"outer_opened\": 0,\n     \"outer_new\": 5,\n     \"comment\": \"속 기저귀 신규 입고 +10\"\n}",
           "type": "json"
         }
       ]

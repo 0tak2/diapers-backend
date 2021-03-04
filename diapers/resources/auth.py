@@ -81,7 +81,6 @@ class LoginCookie(Resource): # /api/auth/loginc
         result = auth_model.getUser()
         if result:
             user_data = result[0]
-            print(user_data['password'])
             if check_password_hash(user_data['password'], password):
                 access_token = create_access_token(identity=user_data)
                 refresh_token = create_refresh_token(identity=user_data)

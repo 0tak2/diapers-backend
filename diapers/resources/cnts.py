@@ -43,7 +43,10 @@ class Client(Resource): # /api/cnts/<string:cnt_id>
         args = parser.parse_args()
         name, birth, description, inner_product, outer_product, deactivated = args.values()
 
-        birth_parsed = datetime.strptime(birth + " +0900", '%Y-%m-%d %z')
+        if birth is not None:
+            birth_parsed = datetime.strptime(birth + " +0900", '%Y-%m-%d %z')
+        else:
+            birth_parsed = None
 
         cnts_model = Cnts('cnts', id=cnt_id, name=name, birth=birth_parsed, description=description,
             inner_product=inner_product, outer_product=outer_product, deactivated=deactivated)

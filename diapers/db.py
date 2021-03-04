@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
-from datetime import datetime
+import datetime
 
 def get_db():
     if not firebase_admin._apps:
@@ -54,17 +54,16 @@ class Model():
     def read_one(self):
         try:
             result = self.ref.document(self.data['id']).get().to_dict()
-
             # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
             for key in result.keys():
                 if str(type(result[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
+                    # 파이퍼스토어 버그인지, 타임존이 넘어오지 않는 현상이 있어서, 타임존을 KST로 덮어씌워준다.
                     timestamp_kst = result[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
                     result[key] = timestamp_kst.isoformat()
 
-            result = str(result)
             return {'success': True, 'result': result}
         except Exception as e:
-            return {'success': False, 'msg': e}
+            return {'success': False, 'msg': str(e)}
     
     def read_page(self, offset, limit):
         try:
@@ -91,7 +90,7 @@ class Model():
 
             return {'success': True, 'result': result, 'last': last}
         except Exception as e:
-            return {'success': False, 'msg': e}, 400
+            return {'success': False, 'msg': str(e)}, 400
 
     def read_all(self):
         try:
@@ -109,18 +108,18 @@ class Model():
                 result.append(str(dic))
             return {'success': True, 'result': result}
         except Exception as e:
-            return {'success': False, 'msg': e}, 400
+            return {'success': False, 'msg': str(e)}, 400
 
     def update(self):
         try:
             self.ref.document(self.data['id']).update(self.data_id_safe)
             return {'success': True}
         except Exception as e:
-            return {'success': False, 'msg': e}, 400
+            return {'success': False, 'msg': str(e)}, 400
 
     def delete(self):
         try:
             self.ref.document(self.data['id']).delete()
             return {'success': True}
         except Exception as e:
-            return {'success': False, 'msg': e}, 400
+            return {'success': False, 'msg': str(e)}, 400

@@ -267,7 +267,7 @@
  */
 
 /**
- * @api {get} /api/cnts 전체 이용자 조회
+ * @api {get} /api/cnts 이용자 리스트 조회 (전체)
  * @apiName Get-All-Cnt-List
  * @apiGroup Cnts
  * @apiHeader Authorization Bearer <JWT_TOKEN>
@@ -277,7 +277,7 @@
  */
 
 /**
- * @api {get} /api/cnts?page=:page&size=:size 이용자 조회
+ * @api {get} /api/cnts?page=:page&size=:size 이용자 리스트 조회 (페이지네이션)
  * @apiName Get-Cnt-List
  * @apiGroup Cnts
  * @apiHeader Authorization Bearer <JWT_TOKEN>
@@ -305,8 +305,14 @@
  * @apiParam (Request Body) {String} comment      비고
  * @apiParamExample {json} Request-Example:
  *     {
+ *          "cnt": "PlS84N66VyNDZSp2X2Yy",
+ *          "time": "2021-02-13 09:00",
+ *          "inner_opened": 1,
+ *          "inner_new": 10,
+ *          "outer_opened": 0,
+ *          "outer_new": 5,
+ *          "comment": "속 기저귀 신규 입고 +10"
  *     }
- * 
  * 
  * @apiSuccess {Boolean} success 요청 성공 여부
  *
@@ -389,7 +395,7 @@
  */
 
 /**
- * @api {get} /api/logs/cnt/cnt_id 이용자별 전체 로그 조회
+ * @api {get} /api/logs/cnt/:cnt_id 이용자별 로그 리스트 조회 (전체)
  * @apiName Get-All-Log-List
  * @apiGroup Logs
  * @apiHeader Authorization Bearer <JWT_TOKEN>
@@ -401,7 +407,7 @@
  */
 
 /**
- * @api {get} /api/logs/cnt/cnt_id?page=:page&size=:size 이용자별 로그 리스트 조회
+ * @api {get} /api/logs/cnt/:cnt_id?page=:page&size=:size 이용자별 로그 리스트 조회 (페이지네이션)
  * @apiName Get-Log-List
  * @apiGroup Logs
  * @apiHeader Authorization Bearer <JWT_TOKEN>
@@ -409,6 +415,35 @@
  * @apiParam {String} cnt_id 이용자 도큐먼트 id
  * @apiParam {Number} page 페이지
  * @apiParam {Number} size 한 페이지 당 표시 개수
+ * 
+ * @apiSuccess {Boolean} success 요청 성공 여부
+ * @apiSuccess {List}    result  조회 결과
+ * @apiSuccess {Boolean} last    마지막 페이지 여부
+ */
+
+ /**
+ * @api {get} /api/logs/cnt/:cnt_id?start=:start&end=:end 특정 기간 이용자별 전체 로그 조회
+ * @apiName Get-All-Log-List-Period
+ * @apiGroup Logs
+ * @apiHeader Authorization Bearer <JWT_TOKEN>
+ * 
+ * @apiParam {String} cnt_id 이용자 도큐먼트 id
+ * @apiParam {Number} start 조회 시작 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
+ * @apiParam {Number} end 조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
+ * 
+ * @apiSuccess {Boolean} success 요청 성공 여부
+ * @apiSuccess {List}    result  조회 결과
+ */
+
+/**
+ * @api {get} /api/logs/cnt/:cnt_id?page=:page&size=:size&start=:start&end=:end 특정 기간 이용자별 로그 리스트 조회
+ * @apiName Get-Log-List-Period
+ * @apiGroup Logs
+ * @apiHeader Authorization Bearer <JWT_TOKEN>
+ *
+ * @apiParam {String} cnt_id 이용자 도큐먼트 id
+ * @apiParam {Number} start 조회 시작 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
+ * @apiParam {Number} end 조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
  * 
  * @apiSuccess {Boolean} success 요청 성공 여부
  * @apiSuccess {List}    result  조회 결과
