@@ -48,4 +48,7 @@ def create_app(test_config=None):
     from diapers.resources import logs
     app.register_blueprint(logs.api_bp)
 
+    from diapers.resources import users
+    app.register_blueprint(users.api_bp)
+
     return app

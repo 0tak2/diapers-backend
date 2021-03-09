@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 from flask_restful import Api, Resource, reqparse
 from flask_jwt_extended import (
     jwt_required, create_access_token,
-    get_jwt_identity, jwt_refresh_token_required,
+    get_jwt_identity, get_jwt_claims, jwt_refresh_token_required,
     create_refresh_token, set_access_cookies,
     set_refresh_cookies, unset_jwt_cookies
 )
@@ -36,6 +36,12 @@ class Login(Resource): # /api/auth/login
                 return {'success': False, 'msg': 'Wrong username or password.'}, 400
         else:
             return {'success': False, 'msg': 'Wrong username or password.'}, 400
+
+    @jwt_required
+    def get(self):
+        current_user = get_jwt_identity()
+        level = get_jwt_claims()['level']
+        return {'username': current_user, 'level': level}, 200
 
 class Register(Resource): # /api/auth/register
     def post(self):
