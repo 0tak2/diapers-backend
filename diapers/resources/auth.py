@@ -27,11 +27,22 @@ class Login(Resource): # /api/auth/login
             user_data = result[0]
             if check_password_hash(user_data['password'], password):
                 access_token = create_access_token(identity=user_data)
-                return {
+
+                realname =  user_data['realname']
+                description =  user_data['description']
+                level =  user_data['level']
+
+                return jsonify({
                     'success': True, 
                     'username': username,
-                    'access_token': access_token
-                    }
+                    'access_token': access_token,
+                    'user_data': {
+                            'realname': realname,
+                            'description': description,
+                            'level': level
+                        }
+                })
+
             else:
                 return {'success': False, 'msg': 'Wrong username or password.'}, 400
         else:
@@ -40,8 +51,9 @@ class Login(Resource): # /api/auth/login
     @jwt_required
     def get(self):
         current_user = get_jwt_identity()
-        level = get_jwt_claims()['level']
-        return {'username': current_user, 'level': level}, 200
+        user_data = get_jwt_claims()
+
+        return {'success': True, 'username': current_user, 'userdata': user_data}, 200
 
 class Register(Resource): # /api/auth/register
     def post(self):
@@ -90,8 +102,21 @@ class LoginCookie(Resource): # /api/auth/loginc
             if check_password_hash(user_data['password'], password):
                 access_token = create_access_token(identity=user_data)
                 refresh_token = create_refresh_token(identity=user_data)
+                
+                realname = user_data['realname']
+                description = user_data['description']
+                level = user_data['level']
 
-                resp = jsonify({'success': True, 'msg': 'You loged in.'})
+                resp = jsonify({
+                    'success': True,
+                    'username': username,
+                    'user_data': {
+                            'realname': realname,
+                            'description': description,
+                            'level': level
+                    }
+                })
+
                 set_access_cookies(resp, access_token)
                 set_refresh_cookies(resp, refresh_token)
                 return resp
