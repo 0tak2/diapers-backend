@@ -74,7 +74,7 @@ class Model():
                 # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
                 for key in dic.keys():
                     if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
-                        timestamp_kst = result[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+                        timestamp_kst = dic[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
                         dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
