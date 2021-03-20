@@ -42,7 +42,7 @@ class Logs(Model):
                 next_result.append(str(dic))
             last = True if next_result == [] else False
 
-            return {'success': True, 'result': result, 'last': last}
+            return {'success': True, 'result': result, 'last': last,  'page': offset // limit, 'size': limit}
         except Exception as e:
             return {'success': False, 'msg': str(e)}, 400
 
@@ -89,7 +89,7 @@ class Logs(Model):
                 next_result.append(str(dic))
             last = True if next_result == [] else False
 
-            return {'success': True, 'result': result, 'last': last}
+            return {'success': True, 'result': result, 'last': last, 'page': offset // limit, 'size': limit}
         except Exception as e:
             return {'success': False, 'msg': str(e)}, 400
 
