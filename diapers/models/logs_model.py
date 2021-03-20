@@ -32,14 +32,14 @@ class Logs(Model):
                         dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
-                result.append(str(dic))
+                result.append(dic)
 
             next_docs = self.ref.offset(offset + limit).limit(limit).stream()
             next_result = []
             for doc in next_docs:
                 dic = doc.to_dict()
                 dic['id'] = doc.id
-                next_result.append(str(dic))
+                next_result.append(dic)
             last = True if next_result == [] else False
 
             return {'success': True, 'result': result, 'last': last,  'page': offset // limit, 'size': limit}
@@ -60,7 +60,7 @@ class Logs(Model):
                         dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
-                result.append(str(dic))
+                result.append(dic)
             return {'success': True, 'result': result}
         except Exception as e:
             return {'success': False, 'msg': str(e)}, 400
@@ -79,14 +79,14 @@ class Logs(Model):
                         dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
-                result.append(str(dic))
+                result.append(dic)
 
             next_docs = self.ref.offset(offset + limit).limit(limit).stream()
             next_result = []
             for doc in next_docs:
                 dic = doc.to_dict()
                 dic['id'] = doc.id
-                next_result.append(str(dic))
+                next_result.append(dic)
             last = True if next_result == [] else False
 
             return {'success': True, 'result': result, 'last': last, 'page': offset // limit, 'size': limit}
@@ -107,7 +107,7 @@ class Logs(Model):
                         dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
-                result.append(str(dic))
+                result.append(dic)
             return {'success': True, 'result': result}
         except Exception as e:
             return {'success': False, 'msg': str(e)}, 400
