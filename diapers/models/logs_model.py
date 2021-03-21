@@ -1,5 +1,6 @@
 from diapers.db import Model
 import datetime
+from pytz import timezone
 from firebase_admin import firestore
 
 class Logs(Model):
@@ -27,8 +28,7 @@ class Logs(Model):
                 # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
                 for key in dic.keys():
                     if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
-                        # 파이퍼스토어 버그인지, 타임존이 넘어오지 않는 현상이 있어서, 타임존을 KST로 덮어씌워준다.
-                        timestamp_kst = dic[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+                        timestamp_kst = dic[key].astimezone(timezone('Asia/Seoul'))
                         dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
@@ -56,7 +56,7 @@ class Logs(Model):
                 # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
                 for key in dic.keys():
                     if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
-                        timestamp_kst = dic[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+                        timestamp_kst = dic[key].astimezone(timezone('Asia/Seoul'))
                         dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
@@ -74,8 +74,7 @@ class Logs(Model):
                 # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
                 for key in dic.keys():
                     if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
-                        # 파이퍼스토어 버그인지, 타임존이 넘어오지 않는 현상이 있어서, 타임존을 KST로 덮어씌워준다.
-                        timestamp_kst = dic[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+                        timestamp_kst = dic[key].astimezone(timezone('Asia/Seoul'))
                         dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
@@ -103,7 +102,7 @@ class Logs(Model):
                 # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
                 for key in dic.keys():
                     if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
-                        timestamp_kst = dic[key].replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+                        timestamp_kst = dic[key].astimezone(timezone('Asia/Seoul'))
                         dic[key] = timestamp_kst.isoformat()
 
                 dic['id'] = doc.id
