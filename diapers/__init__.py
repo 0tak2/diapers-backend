@@ -1,7 +1,7 @@
 '''
 Hanbeot Dungji Diapers Management System
 Backend Server
-v 0.0.1 (2021-02-15)
+v 0.0.8 (2021-03-28)
 '''
 
 import os

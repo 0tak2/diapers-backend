@@ -34,7 +34,7 @@ class Logs(Model):
                 dic['id'] = doc.id
                 result.append(dic)
 
-            next_docs = self.ref.offset(offset + limit).limit(limit).stream()
+            next_docs = self.ref.where('cnt', '==', cnt).order_by('time', direction=firestore.Query.DESCENDING).offset(offset + limit).limit(limit).stream()
             next_result = []
             for doc in next_docs:
                 dic = doc.to_dict()
@@ -80,7 +80,7 @@ class Logs(Model):
                 dic['id'] = doc.id
                 result.append(dic)
 
-            next_docs = self.ref.offset(offset + limit).limit(limit).stream()
+            next_docs = self.ref.where('cnt', '==', cnt).order_by('time', direction=firestore.Query.DESCENDING).offset(offset + limit).limit(limit).stream()
             next_result = []
             for doc in next_docs:
                 dic = doc.to_dict()
