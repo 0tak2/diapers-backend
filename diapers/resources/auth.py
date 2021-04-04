@@ -53,7 +53,7 @@ class Login(Resource): # /api/auth/login
         current_user = get_jwt_identity()
         user_data = get_jwt_claims()
 
-        return {'success': True, 'username': current_user, 'userdata': user_data}, 200
+        return {'success': True, 'username': current_user, 'user_data': user_data}, 200
 
 class Register(Resource): # /api/auth/register
     def post(self):
