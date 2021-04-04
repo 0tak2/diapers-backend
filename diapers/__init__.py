@@ -43,6 +43,11 @@ def create_app(test_config=None):
     def user_identity_lookup(user):
         return user['username']
 
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def root(path):
+        return app.send_static_file('index.html')
+
     from diapers.resources import auth
     app.register_blueprint(auth.api_bp)
 
