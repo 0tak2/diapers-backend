@@ -8,7 +8,7 @@ DIAPERS는 소규모 사회복지시설에서의 효율적인 기저귀 재고 �
 * Google Firestore
 
 # API 도큐먼트
-API 명세는 저장소 루트의 docs/apidoc 디렉토리를 참조하십시오.
+API 명세는 저장소 루트의 static/doc 디렉토리를 참조하십시오.
 
 
 
