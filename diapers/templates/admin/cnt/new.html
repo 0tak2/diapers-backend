@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+<h2 class="ui center aligned header notofont">이용자 신규 추가</h2>
+<div class="ui container edit_ctrl">
+    <div class="ui segment">
+        <form action="./new" method="POST" class="ui form">
+            <div class="field">
+                <label>이름</label>
+                <input type="text" name="name">
+            </div>
+            <div class="field">
+                <label>생년월일(YYYY-MM-DD)</label>
+                <input type="text" name="birth">
+            </div>
+            <div class="field">
+                <label>설명</label>
+                <input type="text" name="description">
+            </div>
+            <div class="field">
+                <label>기본 기저귀</label>
+                <div class="two fields">
+                    <div class="field">
+                        <input type="text" name="outer_product" placeholder="겉 기저귀 제품명">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="inner_product" placeholder="속 기저귀 제품명">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>비활성화</label>
+                <input type="checkbox" name="deactivated" value="True" tabindex="0" class="hidden">
+            </div>
+    
+            <button class="ui blue submit button" type="submit">새로운 데이터 추가</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .edit_ctrl {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
+</style>
+
+{% endblock %}

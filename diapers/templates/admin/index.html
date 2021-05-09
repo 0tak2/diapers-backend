@@ -1,0 +1,111 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+    <h1 class="ui center aligned header notofont">일반</h1>
+    <div class="ui text container notofont">
+        <div class="ui segments">
+            <div id="edit_organization_info" class="ui segment settingitem">
+                <strong>기관 정보 편집</strong>&nbsp;&nbsp; 기관 정보를 편집할 수 있습니다.</div>
+            <div id="get_recent_history" class="ui segment settingitem">
+                <strong>최근 입력 · 수정 이력</strong>&nbsp;&nbsp; 이용자에 상관 없이
+                모든 데이터 입력 이력을 볼 수 있습니다.</div>
+            <div id="load_api_doc" class="ui segment settingitem">
+                <strong>API 문서</strong>&nbsp;&nbsp; 프론트엔드에서 호출하는 REST API 문서를 볼 수 있습니다.</div>
+        </div>
+    </div>
+
+    <h1 class="ui center aligned header notofont">계정</h1>
+    <div class="ui text container notofont">
+        <div class="ui segments">
+            <div id="make_new_account" class="ui segment settingitem">
+                <strong>계정 추가</strong>&nbsp;&nbsp; 새로운 계정(직원)을 추가할 수 있습니다.
+                이 작업은 회원가입이 불가능으로 설정된 상태에서도 가능합니다.</div>
+            <div id="edit_account_info" class="ui segment settingitem">
+                <strong>계정 정보 편집</strong>&nbsp;&nbsp; 등록된 계정(직원)의 정보를 편집, 삭제할 수 있습니다.</div>
+            <div id="toggle_register_onoff" class="ui segment settingitem">
+                <strong>회원가입 가능 여부 설정</strong>&nbsp;&nbsp; 웹페이지나 앱에서 회원가입(직원)이 가능하게 할 것인지,
+                불가능하게 할 것인지 여부를 설정할 수 있습니다.</div>
+        </div>
+    </div>
+
+    <h1 class="ui center aligned header notofont">이용자</h1>
+    <div class="ui text container notofont">
+        <div class="ui segments">
+            <div id="make_new_cnt" class="ui segment settingitem">
+                <strong>이용자 추가</strong>&nbsp;&nbsp; 새로운 이용자 정보를 추가할 수 있습니다.</div>
+            <div id="edit_cnt_info" class="ui segment settingitem">
+                <strong>이용자 정보 편집</strong>&nbsp;&nbsp; 등록된 이용자 정보를 편집, 삭제할 수 있습니다.
+                이용자 정보를 삭제해도 기존에 입력된 기저귀 데이터는 삭제되지 않습니다.</div>
+        </div>
+    </div>
+
+    <h1 class="ui center aligned header notofont">데이터베이스</h1>
+    <div class="ui text last container notofont">
+        <div class="ui segments">
+
+            <div id="backup_database" class="ui segment settingitem">
+                <strong>데이터베이스 백업 · 삭제</strong>&nbsp;&nbsp; 저장된 데이터를 백업하고 삭제할 수 있습니다.
+                Firestore를 무료 티어로 사용하고 있다면, 용량 한도를 초과하지 않도록 이 작업을 정기적으로 수행하여야 합니다.
+                그러나 일일 요청 한도를 초과할 수 있으므로, 신중하게 결정하십시오.
+            </div>
+
+        </div>
+    </div>
+
+    <style>
+        .last.container {
+            margin-bottom: 5rem;
+        }
+
+        h1.ui.center.header {
+            margin-top: 4rem;
+        }
+
+        .settingitem {
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        const adminPagesBaseUri = "/admin"
+        $(document).ready(function() {
+            $('#edit_organization_info').on("click", function() {
+                window.location.href = adminPagesBaseUri + '/general/organization';
+            });
+
+            $('#get_recent_history').on("click", function() {
+                window.location.href = adminPagesBaseUri + '/general/history';
+            });
+
+            $('#load_api_doc').on("click", function() {
+                window.location.href = '/static/doc/index.html';
+            });
+
+            $('#make_new_account').on("click", function() {
+                window.location.href = adminPagesBaseUri + '/account/new';
+            });
+
+            $('#edit_account_info').on("click", function() {
+                window.location.href = adminPagesBaseUri + '/account/edit';
+            });
+
+            $('#toggle_register_onoff').on("click", function() {
+                window.location.href = adminPagesBaseUri + '/account/register-onoff';
+            });
+
+            $('#make_new_cnt').on("click", function() {
+                window.location.href = adminPagesBaseUri + '/cnt/new';
+            });
+
+            $('#edit_cnt_info').on("click", function() {
+                window.location.href = adminPagesBaseUri + '/cnt/edit';
+            });
+
+            $('#backup_database').on("click", function() {
+                window.location.href = adminPagesBaseUri + '/db/backup';
+            });
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+<h2 class="ui center aligned header notofont">최근 입력 · 수정 이력</h2>
+<div class="ui container notofont">
+    {{msg}}
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>이용자</th>
+                <th>기준 시간</th>
+                <th>겉 기저귀 (개봉 팩)</th>
+                <th>속 기저귀 (개봉 팩)</th>
+                <th>겉 기저귀 (미개봉 팩)</th>
+                <th>속 기저귀 (미개봉 팩)</th>
+                <th>비고</th>
+                <th>작성자</th>
+                <th>수정자</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if data is not none %}
+                {% for data in result %}
+                <tr>
+                    <td data-label="이용자">{{data['cnt']}}</td>
+                    <td data-label="기준 시간">{{data['time'][0:10]}} {{data['time'][11:16]}}</td>
+                    <td data-label="겉 기저귀 (개봉 팩)">{{data['outer_new']}}</td>
+                    <td data-label="속 기저귀 (개봉 팩)">{{data['inner_new']}}</td>
+                    <td data-label="겉 기저귀 (미개봉 팩)">{{data['outer_opened']}}</td>
+                    <td data-label="속 기저귀 (미개봉 팩)">{{data['outer_new']}}</td>
+                    <td data-label="비고">{{data['comment']}}</td>
+                    <td data-label="작성자">{{data['created_by']}}</td>
+                    <td data-label="수정자">{{data['modified_by']}}</td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+            {% if result == [] %}
+            <tr><td>더 이상 조회할 데이터가 없습니다.</td></tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<div class="ui right aligned container pagination_ctrl">
+    현재 {{page}} 페이지 &nbsp;&nbsp;&nbsp;
+    <div class="ui buttons">
+        {% if page > 1 %}
+        <a href="?page={{page-1}}" class="ui button">이전</a>
+        {% endif %}
+
+        {% if result != [] %}
+        <a href="?page={{page+1}}" class="ui button">다음</a>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .pagination_ctrl {
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+    }
+</style>
+
+{% endblock %}

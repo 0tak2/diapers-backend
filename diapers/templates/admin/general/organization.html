@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+<h2 class="ui center aligned header notofont">기관 정보 편집</h2>
+<div class="ui container edit_ctrl">
+    <div class="ui segment">
+        <form action="./organization" method="POST" class="ui form">
+            <input type="hidden" name="id" value="{{result['id']}}">
+            <div class="field">
+                <label>시설명</label>
+                <input type="text" name="name" value="{{result['name']}}">
+            </div>
+            <div class="field">
+                <label>소재지</label>
+                <input type="text" name="location" value="{{result['location']}}">
+            </div>
+            <div class="field">
+                <label>전화번호</label>
+                <input type="text" name="phone" value="02-336-3100">
+            </div>
+            <div class="field">
+                <label>팩스</label>
+                <input type="text" name="fax" value="{{result['fax']}}">
+            </div>
+            <div class="field">
+                <label>시설장</label>
+                <input type="text" name="chief" value="{{result['chief']}}">
+            </div>
+    
+            <button class="ui blue submit button" type="submit">수정한 데이터 저장</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .edit_ctrl {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
+</style>
+
+{% endblock %}

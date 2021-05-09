@@ -15,8 +15,7 @@ class Logs(Model):
             'outer_new': 'int',
             'comment': 'str',
             'created_by': 'str',
-            'modified_by': 'str',
-            'hidden': 'bool',
+            'modified_by': 'str'
         }
     
     def read_page_where_cnt(self, cnt, offset, limit):
@@ -110,3 +109,23 @@ class Logs(Model):
             return {'success': True, 'result': result}
         except Exception as e:
             return {'success': False, 'msg': str(e)}, 400
+    
+    # ADMIN PAGE ONLY
+    def read_recent_data_page(self, offset, limit):
+        try:
+            docs = self.ref.order_by('time', direction=firestore.Query.DESCENDING).offset(offset).limit(limit).stream()
+            result = []
+            for doc in docs:
+                dic = doc.to_dict()
+                # 타임스탬프 타입의 필드는 스트링으로 변환하여 반환
+                for key in dic.keys():
+                    if str(type(dic[key])) == "<class 'google.api_core.datetime_helpers.DatetimeWithNanoseconds'>":
+                        timestamp_kst = dic[key].astimezone(timezone('Asia/Seoul'))
+                        dic[key] = timestamp_kst.isoformat()
+
+                dic['id'] = doc.id
+                result.append(dic)
+
+            return {'success': True, 'result': result, 'msg': ''}
+        except Exception as e:
+            return {'success': False, 'result': '', 'msg': str(e)}

@@ -13,7 +13,7 @@ api = Api(api_bp)
 
 class Log(Resource): # /api/logs/<string:log_id>
     decorators = [jwt_required]
-    # id, cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment, created_by, modified_by, hidden
+    # id, cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment, created_by, modified_by
     def get(self, log_id):
         logs_model = Logs('logs', id=log_id)
         return logs_model.read_one()
@@ -36,7 +36,7 @@ class Log(Resource): # /api/logs/<string:log_id>
         time_parsed = datetime.strptime(time + " +0900", '%Y-%m-%d %H:%M %z')
 
         logs_model = Logs('logs', cnt=cnt, time=time_parsed, inner_opened=inner_opened, inner_new=inner_new,
-            outer_opened=outer_opened, outer_new=outer_new, comment=comment, created_by=current_user, modified_by='', hidden=False)
+            outer_opened=outer_opened, outer_new=outer_new, comment=comment, created_by=current_user, modified_by='')
         return logs_model.create()
 
     def patch(self, log_id):
@@ -50,10 +50,9 @@ class Log(Resource): # /api/logs/<string:log_id>
         parser.add_argument('outer_opened', type=int, location='json')
         parser.add_argument('outer_new', type=int, location='json')
         parser.add_argument('comment', type=str, location='json')
-        parser.add_argument('hidden', type=bool, location='json')
 
         args = parser.parse_args()
-        cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment, hidden = args.values()
+        cnt, time, inner_opened, inner_new, outer_opened, outer_new, comment = args.values()
 
         if time is not None:
             time_parsed = datetime.strptime(time + " +0900", '%Y-%m-%d %H:%M %z')
@@ -61,7 +60,7 @@ class Log(Resource): # /api/logs/<string:log_id>
             time_parsed = None
 
         logs_model = Logs('logs', id=log_id, cnt=cnt, time=time_parsed, inner_opened=inner_opened, inner_new=inner_new,
-            outer_opened=outer_opened, outer_new=outer_new, comment=comment, modified_by=current_user, hidden=hidden)
+            outer_opened=outer_opened, outer_new=outer_new, comment=comment, modified_by=current_user)
         return logs_model.update()
 
     def delete(self, log_id):

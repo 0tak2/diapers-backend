@@ -1,0 +1,40 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+<h2 class="ui center aligned header notofont">회원 등록 가능 여부 설정</h2>
+<div class="ui text container edit_ctrl">
+    <div class="ui segment notofont">
+        <p>
+            <strong>[주의]&nbsp;&nbsp;</strong>
+            회원 등록을 항상 가능하도록 설정하면, 누구나 시스템에 접속할 수 있고,
+            보안에 치명적인 위협이 있을 수 있습니다. 따라서 필요할 때에만 회원 등록이
+            가능하도록 설정하는 것이 좋습니다.
+        </p>
+        <form action="./register-onoff" method="POST" class="ui form notofont">
+            <input type="hidden" name="id" value="{{result['id']}}">
+            <div class="field">
+                <label>회원 등록 가능 상태</label>
+                {% if result['register_on'] == True %}
+                <input type="checkbox" name="register_on" value="True" tabindex="0" class="hidden" checked>
+                {% else %}
+                <input type="checkbox" name="register_on" value="True" tabindex="0" class="hidden">
+                {% endif %}
+            </div>
+    
+            <button class="ui blue submit button" type="submit">수정한 데이터 저장</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .edit_ctrl {
+        margin-bottom: 3rem;
+    }
+
+    .ui .form {
+        margin-bottom: 1rem;
+    }
+</style>
+
+{% endblock %}

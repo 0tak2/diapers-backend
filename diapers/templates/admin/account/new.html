@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+<h2 class="ui center aligned header notofont">계정 신규 추가</h2>
+<div class="ui container edit_ctrl">
+    <div class="ui segment">
+        <form action="./new" method="POST" class="ui form">
+            <div class="field">
+                <label>아이디</label>
+                <input type="text" name="username">
+            </div>
+            <div class="field">
+                <label>비밀번호</label>
+                <input type="password" name="password">
+            </div>
+            <div class="field">
+                <label>이름</label>
+                <input type="text" name="realname">
+            </div>
+            <div class="field">
+                <label>설명</label>
+                <input type="text" name="description">
+            </div>
+            <div class="field">
+                <label>권한</label>
+                <select class="ui fluid dropdown" name="level">
+                    <option value="0">0 (일반)</option>
+                    <option value="1">1 (관리)</option>
+                    <option value="2">2 (시스템 관리)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>비활성화</label>
+                <input type="checkbox" name="deactivated" value="True" tabindex="0" class="hidden">
+            </div>
+    
+            <button class="ui blue submit button" type="submit">새로운 데이터 추가</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .edit_ctrl {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
+</style>
+
+{% endblock %}

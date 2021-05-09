@@ -9,6 +9,7 @@ from flask_jwt_extended import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from diapers.models.users_model import Users
+from diapers.models.org_model import Org
 
 api_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 api = Api(api_bp)
@@ -26,23 +27,25 @@ class Login(Resource): # /api/auth/login
         if result:
             user_data = result[0]
             if check_password_hash(user_data['password'], password):
-                access_token = create_access_token(identity=user_data)
+                if user_data['deactivated']:
+                    return {'success': False, 'msg': 'You tried logging in with deactivated account'}, 400
+                else:
+                    access_token = create_access_token(identity=user_data)
 
-                realname =  user_data['realname']
-                description =  user_data['description']
-                level =  user_data['level']
+                    realname =  user_data['realname']
+                    description =  user_data['description']
+                    level =  user_data['level']
 
-                return jsonify({
-                    'success': True, 
-                    'username': username,
-                    'access_token': access_token,
-                    'user_data': {
-                            'realname': realname,
-                            'description': description,
-                            'level': level
-                        }
-                })
-
+                    return jsonify({
+                        'success': True, 
+                        'username': username,
+                        'access_token': access_token,
+                        'user_data': {
+                                'realname': realname,
+                                'description': description,
+                                'level': level
+                            }
+                    })
             else:
                 return {'success': False, 'msg': 'Wrong username or password.'}, 400
         else:
@@ -57,25 +60,35 @@ class Login(Resource): # /api/auth/login
 
 class Register(Resource): # /api/auth/register
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('username', type=str, required=True, location='json')
-        parser.add_argument('password', type=str, required=True, location='json')
-        parser.add_argument('realname', type=str, required=True, location='json')
-        parser.add_argument('description', type=str, required=True, location='json')
-        args = parser.parse_args()
-        username, password, realname, description = args.values()
+        org_model = Org('organization')
+        is_available = org_model.read_all()['result'][0]['register_on']
 
-        hashed_pw = generate_password_hash(password)
+        if is_available:
+            parser = reqparse.RequestParser()
+            parser.add_argument('username', type=str, required=True, location='json')
+            parser.add_argument('password', type=str, required=True, location='json')
+            parser.add_argument('realname', type=str, required=True, location='json')
+            parser.add_argument('description', type=str, required=True, location='json')
+            args = parser.parse_args()
+            username, password, realname, description = args.values()
 
-        users_model = Users('users', username=username, password=hashed_pw, realname=realname,
-            description=description, level=1, deactivated=False)
+            # 공백 확인
+            if username == '' or realname == '' or password == '':
+                return {'success': False, 'msg': 'Required field(s) missing'}, 400
 
-        # 중복 체크
-        result = users_model.getUser()
-        if result:
-            return {'success': False, 'msg': 'The username already exists'}, 400
+            hashed_pw = generate_password_hash(password)
 
-        return users_model.create()
+            users_model = Users('users', username=username, password=hashed_pw, realname=realname,
+                description=description, level=0, deactivated=False)
+
+            # 중복 체크
+            result = users_model.getUser()
+            if result:
+                return {'success': False, 'msg': 'The username already exists'}, 400
+
+            return users_model.create()
+        else:
+            return {'success': False, 'msg': 'It is not a period when you can register.'}, 400
 
 class DoesExist(Resource): # /api/auth/exist/<username>
     def get(self, username):
@@ -100,26 +113,29 @@ class LoginCookie(Resource): # /api/auth/loginc
         if result:
             user_data = result[0]
             if check_password_hash(user_data['password'], password):
-                access_token = create_access_token(identity=user_data)
-                refresh_token = create_refresh_token(identity=user_data)
-                
-                realname = user_data['realname']
-                description = user_data['description']
-                level = user_data['level']
+                if user_data['deactivated']:
+                    return {'success': False, 'msg': 'You tried logging in with deactivated account'}, 400
+                else:
+                    access_token = create_access_token(identity=user_data)
+                    refresh_token = create_refresh_token(identity=user_data)
+                    
+                    realname = user_data['realname']
+                    description = user_data['description']
+                    level = user_data['level']
 
-                resp = jsonify({
-                    'success': True,
-                    'username': username,
-                    'user_data': {
-                            'realname': realname,
-                            'description': description,
-                            'level': level
-                    }
-                })
+                    resp = jsonify({
+                        'success': True,
+                        'username': username,
+                        'user_data': {
+                                'realname': realname,
+                                'description': description,
+                                'level': level
+                        }
+                    })
 
-                set_access_cookies(resp, access_token)
-                set_refresh_cookies(resp, refresh_token)
-                return resp
+                    set_access_cookies(resp, access_token)
+                    set_refresh_cookies(resp, refresh_token)
+                    return resp
             else:
                 return {'success': False, 'msg': 'Wrong username or password.'}, 400
         else:

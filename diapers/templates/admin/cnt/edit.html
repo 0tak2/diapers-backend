@@ -1,0 +1,155 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+<h2 class="ui center aligned header notofont">이용자 정보 편집</h2>
+<div class="ui container notofont">
+    {{msg}}
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>관리 ID</th>
+                <th>이름</th>
+                <th>생년월일</th>
+                <th>설명</th>
+                <th>기본 겉 기저귀</th>
+                <th>기본 속 기저귀</th>
+                <th>비활성화 여부</th>
+                <th>선택하기</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if data is not none %}
+                {% for data in result %}
+                <tr>
+                    <td data-label="관리 ID">{{data['id']}}</td>
+                    <td data-label="이름">{{data['name']}}</td>
+                    <td data-label="생년월일">{{data['birth'][0:10]}}</td>
+                    <td data-label="설명">{{data['description']}}</td>
+                    <td data-label="기본 겉 기저귀">{{data['outer_product']}}</td>
+                    <td data-label="기본 속 기저귀">{{data['inner_product']}}</td>
+                    <td data-label="비활성화 여부">
+                        {% if data['deactivated'] %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}
+                    </td>
+                    
+                    <td data-label="선택하기">
+                        {% if selected_id == data['id'] %}
+                        선택됨
+                        {% else %}
+                        <a href="?selected={{data['id']}}&page={{page}}">선택</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+            {% if result == [] %}
+            <tr><td>더 이상 조회할 데이터가 없습니다.</td></tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<div class="ui right aligned container pagination_ctrl">
+    현재 {{page}} 페이지 &nbsp;&nbsp;&nbsp;
+    <div class="ui buttons">
+        {% if page > 1 %}
+        <a href="?page={{page-1}}" class="ui button">이전</a>
+        {% endif %}
+
+        {% if result != [] %}
+        <a href="?page={{page+1}}" class="ui button">다음</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="ui container edit_ctrl">
+    {% if selected_id != '' %}
+    <div class="ui segment">
+        <h3 class="ui header notofont">선택한 이용자 정보 수정</h3>
+        <form action="./edit" method="POST" class="ui form notofont">
+            <div class="field">
+              <label>관리 ID</label>
+              <input type="text" value="{{selected_doc['id']}}" disabled>
+              <input type="hidden" name="id" value="{{selected_doc['id']}}">
+            </div>
+            <div class="field">
+                <label>이름</label>
+                <input type="text" name="name" value="{{selected_doc['name']}}">
+            </div>
+            <div class="field">
+                <label>생년월일(YYYY-MM-DD)</label>
+                <input type="text" name="birth" value="{{selected_doc['birth'][0:10]}}">
+            </div>
+            <div class="field">
+                <label>설명</label>
+                <input type="text" name="description" value="{{selected_doc['description'][0:10]}}">
+            </div>
+            <div class="field">
+                <label>기본 기저귀</label>
+                <div class="two fields">
+                    <div class="field">
+                        <input type="text" name="outer_product" placeholder="겉 기저귀 제품명"
+                            value="{{selected_doc['outer_product']}}">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="inner_product" placeholder="속 기저귀 제품명"
+                            value="{{selected_doc['inner_product']}}">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>비활성화</label>
+                {% if selected_doc['deactivated'] == True %}
+                <input type="checkbox" name="deactivated" value="True" tabindex="0" class="hidden" checked>
+                {% else %}
+                <input type="checkbox" name="deactivated" value="True" tabindex="0" class="hidden">
+                {% endif %}
+            </div>
+    
+            <button class="ui blue submit button" type="submit">수정한 데이터 저장</button>
+        </form>
+    
+        <div class="ui divider"></div>
+        <h3 class="ui header notofont">선택한 이용자 정보 삭제</h3>
+        <form action="./delete" method="POST" class="ui form notofont">
+            <input type="hidden" name="id" value="{{selected_doc['id']}}">
+    
+            <div class="field">
+                <label>
+                    삭제하면 복구할 수 없습니다. 정말로 삭제하시겠습니까?
+                    <br />확인했으면 체크해주세요.
+                </label>
+                <input type="checkbox" name="confirm" value="True" tabindex="0" class="hidden">
+            </div>
+    
+            <button class="ui red submit button" type="submit">이용자 데이터 삭제</button>
+        </form>
+    </div>
+
+    {% else %}
+    <div class="ui segment notofont">
+        <p>먼저 수정할 이용자를 선택해주십시오.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .pagination_ctrl {
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .edit_ctrl {
+        margin-bottom: 3rem;
+    }
+
+    .ui .form {
+        margin-bottom: 1rem;
+    }
+</style>
+
+{% endblock %}
