@@ -7,8 +7,8 @@
  * @apiParam (Request Body) {String} password 비밀번호
  * @apiParamExample {json} Request-Example:
  *     {
- *       "username": "admin",
- *       "password": "1234"
+ *       "username": "hong",
+ *       "password": "hh12"
  *     }
  * 
  * 
@@ -20,7 +20,7 @@
  *     HTTP/1.1 200 OK
  *     {
  *       "success": true,
- *       "username": "admin",
+ *       "username": "hong",
  *       "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTMzMDY2NjIsIm5iZiI6MTYxMzMwNjY2MiwianRpIjoiN2VjMjZlMTQtMjEyNC00MzQzLWJjZmUtNjY5ZGE1MGViZDg2IiwiZXhwIjoxNjEzOTExNDYyLCJpZGVudGl0eSI6ImxpbW9yYmVhciIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyIsInVzZXJfY2xhaW1zIjp7ImxldmVsIjoyfSwiY3NyZiI6IjM5N2FiNWFhLTZiMzktNGJhNy1iNjYyLWRhZjgyMjIzM2RiOSJ9.51P5XR-05JTWLG5L2GAhOcRMfKQOYGtyS7sEhP-UiDI"
  *     }
  *
@@ -47,10 +47,10 @@
  * 
  * @apiParamExample {json} Request-Example:
  *     {
- *       "username": "admin",
- *       "password": "1234",
+ *       "username": "hong",
+ *       "password": "hh12",
  *       "realname": "홍길동",
- *       "description": "사회보장팀 팀장"
+ *       "description": "사회복지사"
  *     }
  * 
  * 
@@ -74,7 +74,7 @@
  */
 
  /**
- * @api {post} /api/auth/exist/:username 아이디 중복 검사
+ * @api {get} /api/auth/exist/:username 아이디 중복 검사
  * @apiName Check-Username
  * @apiGroup Auth
  *
@@ -100,8 +100,8 @@
  * @apiParam (Request Body) {String} password 비밀번호
  * @apiParamExample {json} Request-Example:
  *     {
- *       "username": "admin",
- *       "password": "1234"
+ *       "username": "hong",
+ *       "password": "hh12"
  *     }
  * 
  * @apiSuccess {Boolean} success 요청 성공 여부
@@ -395,7 +395,7 @@
  */
 
 /**
- * @api {get} /api/logs/cnt/:cnt_id 이용자별 로그 리스트 조회 (전체)
+ * @api {get} /api/logs/cnt/:cnt_id 이용자별 로그 조회 (전체)
  * @apiName Get-All-Log-List
  * @apiGroup Logs
  * @apiHeader Authorization Bearer <JWT_TOKEN>
@@ -407,14 +407,14 @@
  */
 
 /**
- * @api {get} /api/logs/cnt/:cnt_id?page=:page&size=:size 이용자별 로그 리스트 조회 (페이지네이션)
+ * @api {get} /api/logs/cnt/:cnt_id?page=:page&size=:size 이용자별 로그 조회 (페이지네이션)
  * @apiName Get-Log-List
  * @apiGroup Logs
  * @apiHeader Authorization Bearer <JWT_TOKEN>
  *
  * @apiParam {String} cnt_id 이용자 도큐먼트 id
- * @apiParam {Number} page 페이지
- * @apiParam {Number} size 한 페이지 당 표시 개수
+ * @apiParam {Number} page 표시할 페이지 번호 (0부터 시작)
+ * @apiParam {Number} size 한 페이지에 표시할 데이터 개수 (생략하면 10)
  * 
  * @apiSuccess {Boolean} success 요청 성공 여부
  * @apiSuccess {List}    result  조회 결과
@@ -422,7 +422,7 @@
  */
 
  /**
- * @api {get} /api/logs/cnt/:cnt_id?start=:start&end=:end 특정 기간 이용자별 전체 로그 조회
+ * @api {get} /api/logs/cnt/:cnt_id?start=:start&end=:end&oneperday=:oneperday 특정 기간 이용자별 로그 조회 (전체)
  * @apiName Get-All-Log-List-Period
  * @apiGroup Logs
  * @apiHeader Authorization Bearer <JWT_TOKEN>
@@ -430,20 +430,24 @@
  * @apiParam {String} cnt_id 이용자 도큐먼트 id
  * @apiParam {Number} start 조회 시작 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
  * @apiParam {Number} end 조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
+ * @apiParam {Boolean} oneperday 하루에 여러 개의 데이터가 기입된 경우, 이 옵션을 선택하면 가장 이른 시간의 데이터 1개만 응답함.
  * 
  * @apiSuccess {Boolean} success 요청 성공 여부
  * @apiSuccess {List}    result  조회 결과
  */
 
 /**
- * @api {get} /api/logs/cnt/:cnt_id?page=:page&size=:size&start=:start&end=:end 특정 기간 이용자별 로그 리스트 조회
+ * @api {get} /api/logs/cnt/:cnt_id?page=:page&size=:size&start=:start&end=:end&oneperday=:oneperday 특정 기간 이용자별 로그 조회 (페이지네이션)
  * @apiName Get-Log-List-Period
  * @apiGroup Logs
  * @apiHeader Authorization Bearer <JWT_TOKEN>
  *
  * @apiParam {String} cnt_id 이용자 도큐먼트 id
+ * @apiParam {Number} page 표시할 페이지 번호 (0부터 시작)
+ * @apiParam {Number} size 한 페이지에 표시할 데이터 개수 (생략하면 10)
  * @apiParam {Number} start 조회 시작 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
  * @apiParam {Number} end 조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
+ * @apiParam {Boolean} oneperday 하루에 여러 개의 데이터가 기입된 경우, 이 옵션을 지정하면 가장 이른 시간의 데이터 1개만 응답함. (true, True, false 어떠한 문자열이든 값은 True로 지정됨. 옵션을 실행하지 않으려면 URI에서 Param 자체를 빼야함)
  * 
  * @apiSuccess {Boolean} success 요청 성공 여부
  * @apiSuccess {List}    result  조회 결과
@@ -461,11 +465,16 @@
  * @apiParam (Request Body) {String} password    비밀번호
  * @apiParam (Request Body) {String} realname    실제 이름
  * @apiParam (Request Body) {String} description 계정 설명
- * @apiParam (Request Body) {String} level       계정 권한 (2 = 시스템 관리자, 1 = 매니저, 0 = 일반 직원)
+ * @apiParam (Request Body) {String} level       계정 권한 (2 = 시스템 관리자, 1 = 관리자, 0 = 일반 직원)
  * @apiParam (Request Body) {String} deactivated 비활성화 여부
  * @apiParamExample {json} Request-Example:
  *     {
- *       
+ *       "username": "hong",
+ *       "password": "hh12",
+ *       "realname": "홍길동",
+ *       "description": "사회복지사",
+ *       "level": 1,
+ *       "deactivated": false
  *     }
  * 
  * 
@@ -491,7 +500,14 @@
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *     
+ *          "success": true,
+ *          "result": {
+ *              "deactivated": false,
+ *              "password": "pbkdf2:sha256:150000$8NDHk6l5$b273f544bb009cb3b53a9d3e49e6bc9589a28ead443d9a9e774d976e2619f01c",
+ *              "username": "hong",
+ *              "description": "사회복지사",
+ *              "realname": "홍길동",
+ *              "level": 1
  *     }
  */
 
@@ -509,7 +525,7 @@
  * @apiParam (Request Body) {String} [password]    비밀번호
  * @apiParam (Request Body) {String} [realname]    실제 이름
  * @apiParam (Request Body) {String} [description] 계정 설명
- * @apiParam (Request Body) {String} [level]       계정 권한 (2 = 시스템 관리자, 1 = 매니저, 0 = 일반 직원)
+ * @apiParam (Request Body) {String} [level]       계정 권한 (2 = 시스템 관리자, 1 = 관리자, 0 = 일반 직원)
  * @apiParam (Request Body) {String} [deactivated] 비활성화 여부
  * @apiParamExample {json} Request-Example:
  *     {
@@ -548,6 +564,16 @@
  * @api {get} /api/users 전체 사용자 조회
  * @apiName Get-All-User-List
  * @apiGroup Users
+ * @apiHeader Authorization Bearer <JWT_TOKEN>
+ * 
+ * @apiSuccess {Boolean} success 요청 성공 여부
+ * @apiSuccess {List}    result  조회 결과
+ */
+
+/**
+ * @api {get} /api/org 기관 정보 조회
+ * @apiName Get-Org-Info
+ * @apiGroup Organization
  * @apiHeader Authorization Bearer <JWT_TOKEN>
  * 
  * @apiSuccess {Boolean} success 요청 성공 여부

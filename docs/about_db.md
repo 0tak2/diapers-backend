@@ -34,4 +34,3 @@
 * comment [string]: 비고란 ([예시])10팩 입고)
 * created_by [string]: 최초 기록한 유저의 username ([예시])admin)
 * modified_by [string]: 마지막으로 수정한 유저의 username ([예시])admin)
-* hidden [boolean]: 숨김 여부. 일반 계정의 삭제 요청은 바로 받아들여지지 않고 숨김 처리. 이후 관리자가 승인하면 삭제 처리. ([예시])false)

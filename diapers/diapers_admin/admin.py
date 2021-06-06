@@ -536,3 +536,30 @@ def db_delete():
                 return '<script>alert("권한이 없습니다.");\n history.go(-1);</script>'
     else:
         return redirect(url_for('admin.login'))
+
+# 디버깅용 메뉴
+@bp.route('/debug', methods = ['GET'])
+def dubug_menu():
+    isLogin = login_check()
+    if isLogin:
+        if session['level'] > 2: # 레벨 3부터 가능 (3으로 올리려면 파이어스토어 콘솔에서 직접 바꿔야함)
+            return render_template('admin/debug.html')
+        else:
+            return '<script>alert("권한이 없습니다.");\n history.go(-1);</script>'
+
+@bp.route('/debug/init_db', methods = ['GET'])
+def dubug_init_db():
+    isLogin = login_check()
+    if isLogin:
+        if session['level'] > 2: # 레벨 3부터 가능 ()
+            logs_model = Logs('logs')
+            try:
+                db_data = logs_model.delete_all()
+                if db_data['success']:
+                    return '<script>alert("성공적으로 삭제했습니다.");\n location.href="/debug";</script>'
+                else:
+                    return render_template('admin/sthwrong.html')
+            except Exception as e:
+                return '<script>alert("오류가 발생했습니다.\n ' + str(e) + '");\n location.href="/debug";</script>'
+        else:
+            return '<script>alert("권한이 없습니다.");\n history.go(-1);</script>'

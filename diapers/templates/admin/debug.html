@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+    <h1 class="ui center aligned header notofont">데이터베이스</h1>
+    <div class="ui text last container notofont">
+        <div class="ui segments">
+
+            <div id="debug_init_database" class="ui segment settingitem">
+                <strong>데이터베이스 모두 삭제 (log)</strong>&nbsp;&nbsp; 모든 cnt 콜렉션의 데이터를 제거한다.
+            </div>
+
+        </div>
+    </div>
+
+    <style>
+        .last.container {
+            margin-bottom: 5rem;
+        }
+
+        h1.ui.center.header {
+            margin-top: 4rem;
+        }
+
+        .settingitem {
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        const adminPagesBaseUri = "/admin"
+        $(document).ready(function() {
+            $('#debug_init_database').on("click", function() {
+                window.location.href = adminPagesBaseUri + '/debug/init_db';
+            });
+        });
+    </script>
+
+{% endblock %}

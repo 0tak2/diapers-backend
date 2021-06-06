@@ -1,6 +1,6 @@
 define({ "api": [
   {
-    "type": "post",
+    "type": "get",
     "url": "/api/auth/exist/:username",
     "title": "아이디 중복 검사",
     "name": "Check-Username",
@@ -77,7 +77,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n  \"username\": \"admin\",\n  \"password\": \"1234\"\n}",
+          "content": "{\n  \"username\": \"hong\",\n  \"password\": \"hh12\"\n}",
           "type": "json"
         }
       ]
@@ -111,7 +111,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"success\": true,\n  \"username\": \"admin\",\n  \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTMzMDY2NjIsIm5iZiI6MTYxMzMwNjY2MiwianRpIjoiN2VjMjZlMTQtMjEyNC00MzQzLWJjZmUtNjY5ZGE1MGViZDg2IiwiZXhwIjoxNjEzOTExNDYyLCJpZGVudGl0eSI6ImxpbW9yYmVhciIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyIsInVzZXJfY2xhaW1zIjp7ImxldmVsIjoyfSwiY3NyZiI6IjM5N2FiNWFhLTZiMzktNGJhNy1iNjYyLWRhZjgyMjIzM2RiOSJ9.51P5XR-05JTWLG5L2GAhOcRMfKQOYGtyS7sEhP-UiDI\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"success\": true,\n  \"username\": \"hong\",\n  \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTMzMDY2NjIsIm5iZiI6MTYxMzMwNjY2MiwianRpIjoiN2VjMjZlMTQtMjEyNC00MzQzLWJjZmUtNjY5ZGE1MGViZDg2IiwiZXhwIjoxNjEzOTExNDYyLCJpZGVudGl0eSI6ImxpbW9yYmVhciIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyIsInVzZXJfY2xhaW1zIjp7ImxldmVsIjoyfSwiY3NyZiI6IjM5N2FiNWFhLTZiMzktNGJhNy1iNjYyLWRhZjgyMjIzM2RiOSJ9.51P5XR-05JTWLG5L2GAhOcRMfKQOYGtyS7sEhP-UiDI\"\n}",
           "type": "json"
         }
       ]
@@ -175,7 +175,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n  \"username\": \"admin\",\n  \"password\": \"1234\"\n}",
+          "content": "{\n  \"username\": \"hong\",\n  \"password\": \"hh12\"\n}",
           "type": "json"
         }
       ]
@@ -354,7 +354,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n  \"username\": \"admin\",\n  \"password\": \"1234\",\n  \"realname\": \"홍길동\",\n  \"description\": \"사회보장팀 팀장\"\n}",
+          "content": "{\n  \"username\": \"hong\",\n  \"password\": \"hh12\",\n  \"realname\": \"홍길동\",\n  \"description\": \"사회복지사\"\n}",
           "type": "json"
         }
       ]
@@ -1007,7 +1007,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/logs/cnt/:cnt_id",
-    "title": "이용자별 로그 리스트 조회 (전체)",
+    "title": "이용자별 로그 조회 (전체)",
     "name": "Get-All-Log-List",
     "group": "Logs",
     "header": {
@@ -1061,8 +1061,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/logs/cnt/:cnt_id?start=:start&end=:end",
-    "title": "특정 기간 이용자별 전체 로그 조회",
+    "url": "/api/logs/cnt/:cnt_id?start=:start&end=:end&oneperday=:oneperday",
+    "title": "특정 기간 이용자별 로그 조회 (전체)",
     "name": "Get-All-Log-List-Period",
     "group": "Logs",
     "header": {
@@ -1100,6 +1100,13 @@ define({ "api": [
             "optional": false,
             "field": "end",
             "description": "<p>조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "oneperday",
+            "description": "<p>하루에 여러 개의 데이터가 기입된 경우, 이 옵션을 선택하면 가장 이른 시간의 데이터 1개만 응답함.</p>"
           }
         ]
       }
@@ -1235,7 +1242,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/logs/cnt/:cnt_id?page=:page&size=:size",
-    "title": "이용자별 로그 리스트 조회 (페이지네이션)",
+    "title": "이용자별 로그 조회 (페이지네이션)",
     "name": "Get-Log-List",
     "group": "Logs",
     "header": {
@@ -1265,14 +1272,14 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "page",
-            "description": "<p>페이지</p>"
+            "description": "<p>표시할 페이지 번호 (0부터 시작)</p>"
           },
           {
             "group": "Parameter",
             "type": "Number",
             "optional": false,
             "field": "size",
-            "description": "<p>한 페이지 당 표시 개수</p>"
+            "description": "<p>한 페이지에 표시할 데이터 개수 (생략하면 10)</p>"
           }
         ]
       }
@@ -1310,8 +1317,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/logs/cnt/:cnt_id?page=:page&size=:size&start=:start&end=:end",
-    "title": "특정 기간 이용자별 로그 리스트 조회",
+    "url": "/api/logs/cnt/:cnt_id?page=:page&size=:size&start=:start&end=:end&oneperday=:oneperday",
+    "title": "특정 기간 이용자별 로그 조회 (페이지네이션)",
     "name": "Get-Log-List-Period",
     "group": "Logs",
     "header": {
@@ -1340,6 +1347,20 @@ define({ "api": [
             "group": "Parameter",
             "type": "Number",
             "optional": false,
+            "field": "page",
+            "description": "<p>표시할 페이지 번호 (0부터 시작)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "size",
+            "description": "<p>한 페이지에 표시할 데이터 개수 (생략하면 10)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
             "field": "start",
             "description": "<p>조회 시작 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함</p>"
           },
@@ -1349,6 +1370,13 @@ define({ "api": [
             "optional": false,
             "field": "end",
             "description": "<p>조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "oneperday",
+            "description": "<p>하루에 여러 개의 데이터가 기입된 경우, 이 옵션을 지정하면 가장 이른 시간의 데이터 1개만 응답함. (true, True, false 어떠한 문자열이든 값은 True로 지정됨. 옵션을 실행하지 않으려면 URI에서 Param 자체를 빼야함)</p>"
           }
         ]
       }
@@ -1603,6 +1631,48 @@ define({ "api": [
     "groupTitle": "Logs"
   },
   {
+    "type": "get",
+    "url": "/api/org",
+    "title": "기관 정보 조회",
+    "name": "Get-Org-Info",
+    "group": "Organization",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;JWT_TOKEN&gt;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>요청 성공 여부</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "List",
+            "optional": false,
+            "field": "result",
+            "description": "<p>조회 결과</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Organization"
+  },
+  {
     "type": "delete",
     "url": "/api/users/:user_id",
     "title": "사용자 정보 삭제",
@@ -1750,7 +1820,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n\n}",
+          "content": "HTTP/1.1 200 OK\n{\n     \"success\": true,\n     \"result\": {\n         \"deactivated\": false,\n         \"password\": \"pbkdf2:sha256:150000$8NDHk6l5$b273f544bb009cb3b53a9d3e49e6bc9589a28ead443d9a9e774d976e2619f01c\",\n         \"username\": \"hong\",\n         \"description\": \"사회복지사\",\n         \"realname\": \"홍길동\",\n         \"level\": 1\n}",
           "type": "json"
         }
       ]
@@ -1828,7 +1898,7 @@ define({ "api": [
             "type": "String",
             "optional": true,
             "field": "level",
-            "description": "<p>계정 권한 (2 = 시스템 관리자, 1 = 매니저, 0 = 일반 직원)</p>"
+            "description": "<p>계정 권한 (2 = 시스템 관리자, 1 = 관리자, 0 = 일반 직원)</p>"
           },
           {
             "group": "Request Body",
@@ -1930,7 +2000,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "level",
-            "description": "<p>계정 권한 (2 = 시스템 관리자, 1 = 매니저, 0 = 일반 직원)</p>"
+            "description": "<p>계정 권한 (2 = 시스템 관리자, 1 = 관리자, 0 = 일반 직원)</p>"
           },
           {
             "group": "Request Body",
@@ -1944,7 +2014,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n  \n}",
+          "content": "{\n  \"username\": \"hong\",\n  \"password\": \"hh12\",\n  \"realname\": \"홍길동\",\n  \"description\": \"사회복지사\",\n  \"level\": 1,\n  \"deactivated\": false\n}",
           "type": "json"
         }
       ]
