@@ -129,3 +129,15 @@ class Logs(Model):
             return {'success': True, 'result': result, 'msg': ''}
         except Exception as e:
             return {'success': False, 'result': '', 'msg': str(e)}
+
+    # ADMIN PAGE ONLY
+    def delete_all_excepting_a_week(self):
+        current = datetime.datetime.now()
+        a_week_ago = current - datetime.timedelta(days=7)
+        try:
+            docs = self.ref.where('time', '<', a_week_ago).stream()
+            for doc in docs:
+                doc.reference.delete()
+            return {'success': True}
+        except Exception as e:
+            return {'success': False, 'msg': str(e)}, 400

@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request
+from flask import Blueprint, render_template, session, redirect, url_for, request, make_response, jsonify
+from flask.helpers import make_response
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -8,6 +9,8 @@ from diapers.models.cnts_model import Cnts
 from diapers.models.org_model import Org
 
 from datetime import datetime
+
+import time
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -485,6 +488,51 @@ def db_backup():
                 username = session['username'], realname = session['realname'],
                 description = session['description'], level = session['level'])
         elif request.method == 'POST':
-            return 'POST REQUEST'
+            if session['level'] > 0: # 레벨 1부터 가능
+                if request.form.get('confirm') == 'True':
+                    logs_model = Logs('logs')
+                    
+                    try:
+                        db_data = logs_model.read_all()
+                        if db_data['success']:
+                            today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+
+                            response = make_response(jsonify(db_data['result']))
+                            response.headers['Content-Disposition'] = f'attachment; filename="{today}-diapers.json"'
+                            return response
+                        else:
+                            return render_template('admin/sthwrong.html')
+                    except Exception as e:
+                        return '<script>alert("오류가 발생했습니다.\n ' + str(e) + '");\n location.href="./edit";</script>'
+                else:
+                    return '<script>alert("확인란에 체크하셔야 작업을 수행할 수 있습니다.");\n history.go(-1);</script>'
+            else:
+                return '<script>alert("권한이 없습니다.");\n history.go(-1);</script>'
+    else:
+        return redirect(url_for('admin.login'))
+
+@bp.route('/db/delete', methods = ['POST', 'GET'])
+def db_delete():
+    isLogin = login_check()
+    if isLogin:
+        if request.method == 'GET':
+            return render_template('admin/sthwrong.html')
+        elif request.method == 'POST':
+            if session['level'] > 0: # 레벨 1부터 가능
+                if request.form.get('confirm') == 'True':
+                    logs_model = Logs('logs')
+                    
+                    try:
+                        db_data = logs_model.delete_all_excepting_a_week()
+                        if db_data['success']:
+                            return '<script>alert("성공적으로 삭제했습니다.");\n location.href="./backup";</script>'
+                        else:
+                            return render_template('admin/sthwrong.html')
+                    except Exception as e:
+                        return '<script>alert("오류가 발생했습니다.\n ' + str(e) + '");\n location.href="./backup";</script>'
+                else:
+                    return '<script>alert("확인란에 체크하셔야 작업을 수행할 수 있습니다.");\n history.go(-1);</script>'
+            else:
+                return '<script>alert("권한이 없습니다.");\n history.go(-1);</script>'
     else:
         return redirect(url_for('admin.login'))
