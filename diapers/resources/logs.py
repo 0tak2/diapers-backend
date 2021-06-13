@@ -98,7 +98,7 @@ class LogsList(Resource): # /api/logs/cnt/<string:cnt_id>
 
             if start_parsed is not None and end_parsed is not None: # 기간 조회
                 if oneperday:
-                    return logs_model.read_page_where_cnt_period_one_per_day(cnt_id, page * size, size, start_parsed, end_parsed)
+                    return {'success': False, 'msg': 'The system cannot do pagination when turned on "oneperday" option.'}, 500
                 else:
                     return logs_model.read_page_where_cnt_period(cnt_id, page * size, size, start_parsed, end_parsed)
             else:

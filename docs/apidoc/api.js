@@ -447,7 +447,6 @@
  * @apiParam {Number} size 한 페이지에 표시할 데이터 개수 (생략하면 10)
  * @apiParam {Number} start 조회 시작 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
  * @apiParam {Number} end 조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함
- * @apiParam {Boolean} oneperday 하루에 여러 개의 데이터가 기입된 경우, 이 옵션을 지정하면 가장 이른 시간의 데이터 1개만 응답함. (true, True, false 어떠한 문자열이든 값은 True로 지정됨. 옵션을 실행하지 않으려면 URI에서 Param 자체를 빼야함)
  * 
  * @apiSuccess {Boolean} success 요청 성공 여부
  * @apiSuccess {List}    result  조회 결과

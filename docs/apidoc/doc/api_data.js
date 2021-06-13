@@ -889,62 +889,6 @@ define({ "api": [
     "groupTitle": "Cnts"
   },
   {
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
-          }
-        ]
-      }
-    },
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "./doc/doc/main.js",
-    "group": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\doc\\main.js",
-    "groupTitle": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\doc\\main.js",
-    "name": ""
-  },
-  {
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
-          }
-        ]
-      }
-    },
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "./doc/main.js",
-    "group": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\main.js",
-    "groupTitle": "E:\\Projects\\2021\\diapers-backend\\docs\\apidoc\\doc\\main.js",
-    "name": ""
-  },
-  {
     "type": "delete",
     "url": "/api/logs/:log_id",
     "title": "이용자 정보 삭제",
@@ -1370,13 +1314,6 @@ define({ "api": [
             "optional": false,
             "field": "end",
             "description": "<p>조회 종료 시각 (YYYY-MM-DD HH:MM) *시각이 같을 경우 포함함</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "oneperday",
-            "description": "<p>하루에 여러 개의 데이터가 기입된 경우, 이 옵션을 지정하면 가장 이른 시간의 데이터 1개만 응답함. (true, True, false 어떠한 문자열이든 값은 True로 지정됨. 옵션을 실행하지 않으려면 URI에서 Param 자체를 빼야함)</p>"
           }
         ]
       }
